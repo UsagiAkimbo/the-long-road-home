@@ -65,7 +65,7 @@ add([
 
 // Minimal game for testing
 add([
-    text("The Long Road Home", { size: 24, font: "sans-serif" }),
+    text("The Long Road Home", { size: 24 }),
     pos(width() / 2, 50),
     origin("center"),
     layer("ui"),
