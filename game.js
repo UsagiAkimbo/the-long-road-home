@@ -8,7 +8,12 @@ kaboom({
 });
 
 // Define layers
-layers(["bg", "obj", "ui"], "obj");
+try {
+    layers(["bg", "obj", "ui"], "obj");
+    console.log("Layers defined successfully");
+} catch (err) {
+    console.error("Layers failed:", err);
+}
 
 // Font preloading
 let fontLoaded = false;
