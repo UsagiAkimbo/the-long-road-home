@@ -22,15 +22,6 @@ add([
     fixed()
 ]);
 
-// Add stats background
-add([
-    rect(300, 60),
-    pos(15, 65),
-    color(0, 0, 0, 0.7),
-    layer("ui"),
-    fixed()
-]);
-
 // Game state
 let gameState = {
     distance: 1000,
@@ -171,6 +162,23 @@ const events = [
 ];
 
 // HUD: UI
+add([
+    text("The Long Road Home", { size: 32, font: "apl386" }),
+    pos(width() / 2, 20),
+    origin("center"),
+    layer("ui"),
+    fixed()
+]);
+
+// Add stats background
+add([
+    rect(300, 60),
+    pos(15, 65),
+    color(0, 0, 0, 0.7),
+    layer("ui"),
+    fixed()
+]);
+
 const status = add([
     text("", { size: 20, font: "apl386" }),
     pos(20, 70),
