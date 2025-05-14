@@ -21,28 +21,13 @@ try {
 }
 
 // Font preloading
-//let fontLoaded = false;
-//const font = new FontFace("vt323", "url(assets/VT323-Regular.ttf)");
-//font.load().then(() => {
-//    document.fonts.add(font);
-//    fontLoaded = true;
-//    console.log("VT323 font preloaded successfully");
-//}).catch(err => console.error("FontFace preload failed:", err));
 let fontLoaded = false;
-try {
-    const font = new FontFace("vt323", "url(assets/VT323-Regular.ttf)");
-    font.load().then(() => {
-        document.fonts.add(font);
-        fontLoaded = true;
-        console.log("VT323 font preloaded successfully");
-        // Load font in Kaboom.js after preload
-        loadFont("vt323", "assets/VT323-Regular.ttf", {
-            error: () => console.error("Failed to load VT323 font in Kaboom.js")
-        });
-    }).catch(err => console.error("FontFace preload failed:", err));
-} catch (err) {
-    console.error("FontFace setup failed:", err);
-}
+const font = new FontFace("vt323", "url(assets/VT323-Regular.ttf)");
+font.load().then(() => {
+    document.fonts.add(font);
+    fontLoaded = true;
+    console.log("VT323 font preloaded successfully");
+}).catch(err => console.error("FontFace preload failed:", err));
 
 // Load assets
 //loadFont("vt323", "assets/VT323-Regular.ttf", {
