@@ -1,17 +1,13 @@
-﻿<<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
     <title>The Long Road Home</title>
     <link rel="stylesheet" href="style.css">
+    <!-- Load Kaboom.js from CDN -->
+    <script src="https://unpkg.com/kaboom@3000.0.0/dist/kaboom.js"></script>
 </head>
 <body>
-    <div id="game">
-        <h1>The Long Road Home</h1>
-        <p id="status">Distance to home: 1000 light-years. Fuel: 50. Food: 50.</p>
-        <p id="event">You encounter a derelict ship. Explore or ignore?</p>
-        <button onclick="makeChoice('explore')">Explore</button>
-        <button onclick="makeChoice('ignore')">Ignore</button>
-    </div>
+    <div id="game"></div>
     <script src="game.js"></script>
 </body>
 </html>
