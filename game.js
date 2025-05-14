@@ -9,7 +9,9 @@ kaboom({
 layers(["bg", "obj", "ui"], "obj");
 
 // Load assets
-loadFont("roboto", "assets/roboto.ttf");
+loadFont("roboto", "assets/roboto.ttf", {
+    error: () => console.error("Failed to load font: assets/roboto.ttf")
+});
 loadSprite("background", "assets/background.jpg", {
     error: () => console.error("Failed to load background image")
 });
