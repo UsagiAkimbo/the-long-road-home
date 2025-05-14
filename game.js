@@ -107,7 +107,7 @@ function triggerEvent() {
     // Add choice buttons
     event.choices.forEach((choice, index) => {
         add([
-            text(choice.text, { size: 20, font: "sans-serif" }),
+            text(choice.text, { size: 20 }),
             pos(width() / 2, height() / 2 + 50 + index * 40),
             origin("center"),
             layer("ui"),
