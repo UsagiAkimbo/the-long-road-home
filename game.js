@@ -1,11 +1,16 @@
 // Initialize Kaboom
-kaboom({
-    width: window.innerWidth,
-    height: window.innerHeight,
-    background: [51, 204, 51], // Retro green (#33CC33)
-    stretch: true, // Scale content to fit
-    letterbox: true // Maintain aspect ratio
-});
+try {
+    kaboom({
+        width: window.innerWidth,
+        height: window.innerHeight,
+        background: [51, 204, 51], // Retro green (#33CC33)
+        stretch: true,
+        letterbox: true
+    });
+    console.log("Kaboom initialized successfully");
+} catch (err) {
+    console.error("Kaboom initialization failed:", err);
+}
 
 // Define layers
 try {
