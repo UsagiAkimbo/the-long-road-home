@@ -1,8 +1,10 @@
 // Initialize Kaboom
 kaboom({
-    width: 800,
-    height: 600,
-    background: [0, 0, 0]
+    width: window.innerWidth,
+    height: window.innerHeight,
+    background: [51, 204, 51], // Retro green (#33CC33)
+    stretch: true, // Scale content to fit
+    letterbox: true // Maintain aspect ratio
 });
 
 // Define layers
