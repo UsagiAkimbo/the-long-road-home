@@ -11,7 +11,7 @@ kaboom({
 layers(["bg", "obj", "ui"], "obj");
 
 // Load assets
-loadFont("vt323", "assets/VT323-Regular.ttf", {
+loadFont("vt323", "assets/vt323-regular.ttf", {
     error: () => console.error("Failed to load font: assets/ocr-a.ttf")
 });
 loadSprite("boxImage", "assets/space-00.jpg", {
