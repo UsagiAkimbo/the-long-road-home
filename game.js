@@ -22,11 +22,20 @@ add([
     fixed()
 ]);
 
+// Add stats background
+add([
+    rect(300, 60),
+    pos(15, 65),
+    color(0, 0, 0, 0.7),
+    layer("ui"),
+    fixed()
+]);
+
 // Game state
 let gameState = {
-    distance: 1000, // Arbitrary units (Earth to Mars)
-    fuel: 50,
-    food: 50,
+    distance: 1000,
+    fuel: 100, // Increased for balance
+    food: 100,
     credits: 100,
     gameOver: false
 };
@@ -200,9 +209,9 @@ function triggerEvent() {
             { clickAction: () => {
                 const result = choice.action();
                 eventText.text = result;
-                gameState.distance -= 10;
-                gameState.fuel -= 5;
-                gameState.food -= 5;
+                gameState.distance -= 5;
+                gameState.fuel -= 3;
+                gameState.food -= 3;
 
                 if (gameState.fuel <= 0 || gameState.food <= 0) {
                     gameState.gameOver = true;
