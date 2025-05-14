@@ -179,6 +179,14 @@ const status = add([
     fixed()
 ]);
 
+add([
+    rect(600, 200),
+    pos(width() / 2 - 300, height() / 2 - 100),
+    color(0, 0, 0, 0.7),
+    layer("ui"),
+    fixed()
+]);
+
 const eventText = add([
     text("", { size: 24, font: "apl386" }),
     pos(width() / 2, height() / 2 - 50),
@@ -229,6 +237,17 @@ function triggerEvent() {
         ]);
     });
 }
+
+// Save
+function saveGame() {
+    localStorage.setItem("gameState", JSON.stringify(gameState));
+}
+// Load
+function loadGame() {
+    const saved = localStorage.getItem("gameState");
+    if (saved) gameState = JSON.parse(saved);
+}
+// Call saveGame() after each event
 
 onClick("button", (b) => b.clickAction());
 
