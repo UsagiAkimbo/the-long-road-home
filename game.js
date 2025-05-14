@@ -22,7 +22,7 @@ try {
 
 // Font preloading
 let fontLoaded = false;
-const font = new FontFace("vt323", "url(assets/vt323.ttf)");
+const font = new FontFace("vt323", "url(assets/VT323-Regular.ttf)");
 font.load().then(() => {
     document.fonts.add(font);
     fontLoaded = true;
