@@ -5,6 +5,9 @@ kaboom({
     background: [0, 0, 0], // Black background (fallback)
 });
 
+// Define layers
+layers(["bg", "obj", "ui"], "obj");
+
 // Load background image
 loadSprite("background", "assets/background.jpg");
 
@@ -51,13 +54,10 @@ const events = [
 add([
     sprite("background"),
     pos(0, 0),
-    scale(width() / 1920, height() / 1080), // Adjust based on image size (e.g., 1920x1080)
+    scale(width() / 800, height() / 600), // Adjust based on image size (e.g., 800x600)
     layer("bg"),
     fixed() // Keeps background static
 ]);
-
-// Set layers
-layers(["bg", "obj", "ui"], "obj");
 
 // UI: Status text
 const status = add([
