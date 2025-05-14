@@ -1,15 +1,23 @@
+/* style.css */
 body {
     margin: 0;
-    background: black; /* Fallback background */
+    background: #111; /* Dark space theme */
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
+    font-family: 'Roboto', sans-serif; /* Fallback for non-canvas text */
 }
 
 #game {
-    /* Center the game canvas */
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+/* HUD border around canvas */
+canvas {
+    border: 4px solid #333; /* Dark gray border */
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.2); /* Subtle glow */
+    background: #000; /* Black canvas background */
 }
