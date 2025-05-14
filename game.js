@@ -11,15 +11,35 @@ kaboom({
 layers(["bg", "obj", "ui"], "obj");
 
 // Load assets
-loadSprite("background", "assets/background.jpg", {
-    error: () => console.error("Failed to load background image")
+loadFont("vt323", "assets/VT323-Regular.ttf", {
+    error: () => console.error("Failed to load font: assets/ocr-a.ttf")
 });
+loadSprite("boxImage", "assets/space-00.jpg", {
+    error: () => console.error("Failed to load image: assets/box-image.jpg")
+});
+loadSprite("ship", "assets/starship.jpg");
 
-// Add background
+//Add Starship Sprite
 add([
-    sprite("background"),
-    pos(0, 0),
-    scale(width() / 800, height() / 600),
+    sprite("ship"),
+    pos(100, 500),
+    scale(0.5),
+    layer("obj")
+]);
+
+// Add image box (800x400, rounded)
+add([
+    sprite("boxImage"),
+    pos(width() / 2 - 400, height() / 2 - 200), // Center 800x400
+    scale(1), // Adjust if needed for scaling
+    layer("bg"),
+    fixed()
+]);
+add([
+    rect(800, 400, { radius: 20 }), // Rounded rectangle overlay
+    pos(width() / 2 - 400, height() / 2 - 200),
+    color(0, 0, 0, 0), // Transparent fill, only border
+    outline(4, [51, 204, 51]), // Green border
     layer("bg"),
     fixed()
 ]);
