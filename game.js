@@ -9,7 +9,7 @@ kaboom({
 layers(["bg", "obj", "ui"], "obj");
 
 // Load background image
-loadSprite("background", "assets/background.jpg");
+loadSprite("background", "assets/background.png");
 
 // Game state
 let gameState = {
