@@ -8,8 +8,12 @@ kaboom({
 // Define layers
 layers(["bg", "obj", "ui"], "obj");
 
-// Load background image
-loadSprite("background", "assets/background.png");
+// Load background image with error handling
+loadSprite("background", "assets/background.jpg", {
+    error: () => {
+        console.error("Failed to load background image: assets/background.jpg");
+    }
+});
 
 // Game state
 let gameState = {
@@ -50,13 +54,22 @@ const events = [
     }
 ];
 
-// Add background sprite (scaled to fit canvas)
+// Add background sprite
 add([
     sprite("background"),
     pos(0, 0),
-    scale(width() / 800, height() / 600), // Adjust based on image size (e.g., 800x600)
+    scale(width() / 800, height() / 600), // Adjust for 800x600 image
     layer("bg"),
-    fixed() // Keeps background static
+    fixed()
+]);
+
+// Minimal game for testing
+add([
+    text("The Long Road Home", { size: 24, font: "sans-serif" }),
+    pos(width() / 2, 50),
+    origin("center"),
+    layer("ui"),
+    fixed()
 ]);
 
 // UI: Status text
