@@ -272,6 +272,7 @@ function loadGame() {
 // Call saveGame() after each event
 
 onClick("button", (b) => b.clickAction());
+onClick("restart", (b) => b.clickAction());
 
 // Start game
 updateStatus();
