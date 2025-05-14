@@ -10,9 +10,18 @@ kaboom({
 // Define layers
 layers(["bg", "obj", "ui"], "obj");
 
+// Font preloading
+let fontLoaded = false;
+const font = new FontFace("vt323", "url(assets/vt323.ttf)");
+font.load().then(() => {
+    document.fonts.add(font);
+    fontLoaded = true;
+    console.log("VT323 font preloaded successfully");
+}).catch(err => console.error("FontFace preload failed:", err));
+
 // Load assets
 loadFont("vt323", "assets/VT323-Regular.ttf", {
-    error: () => console.error("Failed to load font: assets/ocr-a.ttf")
+    error: () => console.error("Failed to load VT323 font")
 });
 loadSprite("boxImage", "assets/space-00.jpg", {
     error: () => console.error("Failed to load image: assets/box-image.jpg")
@@ -184,8 +193,9 @@ const events = [
 ];
 
 // HUD: UI
+const fontName = fontLoaded ? "vt323" : "apl386"; // Fallback
 add([
-    text("The Long Road Home", { size: 32, font: "apl386" }),
+    text("The Long Road Home", { size: 32, font: fontName }),
     pos(width() / 2, 20),
     origin("center"),
     layer("ui"),
@@ -202,7 +212,7 @@ add([
 ]);
 
 const status = add([
-    text("", { size: 20, font: "apl386" }),
+    text("", { size: 20, font: fontName }),
     pos(20, 70),
     origin("topleft"),
     layer("ui"),
@@ -218,7 +228,7 @@ add([
 ]);
 
 const eventText = add([
-    text("", { size: 24, font: "apl386" }),
+    text("", { size: 24, font: fontName }),
     pos(width() / 2, height() / 2 - 50),
     origin("center"),
     layer("ui"),
@@ -232,7 +242,7 @@ function updateStatus() {
 function triggerEvent() {
     if (gameState.gameOver) {
         add([
-            text("Restart", { size: 20, font: "apl386" }),
+            text("Restart", { size: 20, font: fontName }),
             pos(width() / 2, height() / 2 + 100),
             origin("center"),
             layer("ui"),
@@ -252,7 +262,7 @@ function triggerEvent() {
 
     event.choices.forEach((choice, index) => {
         add([
-            text(choice.text, { size: 20, font: "apl386" }),
+            text(choice.text, { size: 20, font: fontName }),
             pos(width() / 2, height() / 2 + 20 + index * 40),
             origin("center"),
             layer("ui"),
