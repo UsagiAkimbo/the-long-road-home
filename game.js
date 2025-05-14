@@ -74,7 +74,7 @@ add([
 
 // UI: Status text
 const status = add([
-    text("", { size: 24, font: "sans-serif" }),
+    text("", { size: 24 }),
     pos(width() / 2, 50),
     origin("center"),
     layer("ui"),
@@ -83,7 +83,7 @@ const status = add([
 
 // UI: Event text
 const eventText = add([
-    text("", { size: 24, font: "sans-serif" }),
+    text("", { size: 24 }),
     pos(width() / 2, height() / 2),
     origin("center"),
     layer("ui"),
