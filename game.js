@@ -9,9 +9,6 @@ kaboom({
 layers(["bg", "obj", "ui"], "obj");
 
 // Load assets
-loadFont("roboto", "assets/roboto.ttf", {
-    error: () => console.error("Failed to load font: assets/roboto.ttf")
-});
 loadSprite("background", "assets/background.jpg", {
     error: () => console.error("Failed to load background image")
 });
@@ -166,7 +163,7 @@ const events = [
 
 // HUD: UI
 const status = add([
-    text("", { size: 20, font: "roboto" }),
+    text("", { size: 20, font: "apl386" }),
     pos(20, 70),
     origin("topleft"),
     layer("ui"),
@@ -174,7 +171,7 @@ const status = add([
 ]);
 
 const eventText = add([
-    text("", { size: 24, font: "roboto" }),
+    text("", { size: 24, font: "apl386" }),
     pos(width() / 2, height() / 2 - 50),
     origin("center"),
     layer("ui"),
@@ -194,7 +191,7 @@ function triggerEvent() {
 
     event.choices.forEach((choice, index) => {
         add([
-            text(choice.text, { size: 20, font: "roboto" }),
+            text(choice.text, { size: 20, font: "apl386" }),
             pos(width() / 2, height() / 2 + 20 + index * 40),
             origin("center"),
             layer("ui"),
