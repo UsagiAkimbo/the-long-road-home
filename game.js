@@ -208,7 +208,21 @@ function updateStatus() {
 }
 
 function triggerEvent() {
-    if (gameState.gameOver) return;
+    if (gameState.gameOver) {
+        add([
+            text("Restart", { size: 20, font: "apl386" }),
+            pos(width() / 2, height() / 2 + 100),
+            origin("center"),
+            layer("ui"),
+            area(),
+            "restart",
+            { clickAction: () => {
+                gameState = { distance: 1000, fuel: 100, food: 100, credits: 100, gameOver: false };
+                updateStatus();
+                triggerEvent();
+            }}
+        ]);
+    }
     const event = events[Math.floor(Math.random() * events.length)];
     eventText.text = event.text;
 
