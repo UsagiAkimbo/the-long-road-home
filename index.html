@@ -1,13 +1,31 @@
-<!-- index.html -->
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Long Road Home</title>
     <link rel="stylesheet" href="style.css">
-    <script src="https://unpkg.com/kaboom@2000.2.9/dist/kaboom.js"></script>
+    <script src="game.js" defer></script>
 </head>
 <body>
-    <div id="game"></div>
-    <script src="game.js"></script>
+    <div id="game">
+        <div id="image-box"></div>
+        <div id="ship"></div>
+        <div id="hud">
+            <h1 id="title">The Long Road Home</h1>
+            <div id="stats-background"></div>
+            <div id="stats">
+                Distance: <span id="distance">1000</span> |
+                Fuel: <span id="fuel">100</span> |
+                Food: <span id="food">100</span> |
+                Credits: <span id="credits">100</span>
+            </div>
+        </div>
+        <div id="event-area">
+            <div id="event-background"></div>
+            <p id="event-text"></p>
+            <div id="choices"></div>
+        </div>
+    </div>
 </body>
 </html>
