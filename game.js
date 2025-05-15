@@ -3,7 +3,7 @@ try {
     kaboom({
         width: window.innerWidth,
         height: window.innerHeight,
-        background: [255, 255, 255], // Retro green (#55FF55)
+        background: [0, 0, 0], // Retro green (#55FF55)
         stretch: true,
         letterbox: true
     });
