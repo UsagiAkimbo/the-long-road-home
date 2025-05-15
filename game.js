@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
         gameState.familySize = Math.floor(Math.random() * 3) + 4; // 4, 5, or 6
         gameState.food = gameState.familySize * 150; // 150 kg/person for ~180 days
         console.log(`Family size set to ${gameState.familySize}, food: ${gameState.food}`);
+    }
 
     // Save/Load
     function saveGame() {
