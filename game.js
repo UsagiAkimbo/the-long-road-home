@@ -279,53 +279,6 @@ try {
             }
         ];
 
-        // HUD: UI
-        const fontName = fontLoaded ? "vt323" : "apl386"; // Fallback
-        add([
-            rect(350, 60),
-            pos(20, 100),
-            color(0, 0, 0, 0.7),
-            layer("ui"),
-            fixed()
-        ]);
-        add([
-            text("The Long Road Home", { size: 48, font: fontName }),
-            pos(width() / 2, 50),
-            anchor("center"),
-            layer("ui"),
-            fixed()
-        ]);
-        add([
-            rect(300, 60),
-            pos(15, 65),
-            color(0, 0, 0, 0.7),
-            anchor("topleft"),
-            layer("ui"),
-            fixed()
-        ]);
-        const status = add([
-            text("", { size: 24, font: fontName }),
-            pos(25, 105),
-            anchor("topleft"),
-            layer("ui"),
-            fixed()
-        ]);
-        add([
-            rect(600, 200),
-            pos(width() / 2 - 300, height() / 2 - 100),
-            color(0, 0, 0, 0.7),
-            anchor("center"),
-            layer("ui"),
-            fixed()
-        ]);
-        const eventText = add([
-            text("", { size: 32, font: fontName }),
-            pos(width() / 2, height() / 2 - 50),
-            anchor("center"),
-            layer("ui"),
-            fixed()
-        ]);
-
         function updateStatus() {
             status.text = `Distance: ${gameState.distance} | Fuel: ${gameState.fuel} | Food: ${gameState.food} | Credits: ${gameState.credits}`;
         }
