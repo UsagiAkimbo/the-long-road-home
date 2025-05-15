@@ -12,6 +12,28 @@ try {
     console.error("Kaboom initialization failed:", err);
 }
 
+// Force canvas redraw
+function forceRedraw() {
+    requestAnimationFrame(() => {
+        // Trigger a render by updating the canvas
+        scene("main", () => {});
+        go("main");
+        console.log("Canvas redraw triggered");
+    });
+}
+
+// Handle window resize
+window.onresize = () => {
+    try {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        console.log("Canvas resized to", window.innerWidth, window.innerHeight);
+        forceRedraw();
+    } catch (err) {
+        console.error("Resize failed:", err);
+    }
+};
+
 // Define layers
 try {
     layers(["bg", "obj", "ui"], "obj");
