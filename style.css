@@ -38,12 +38,14 @@ body {
 }
 
 #ship {
-    width: 100px; /* Adjust based on starship.jpg size, 50% scale */
+    width: 100px; /* 50% scale of assumed 200x200px starship.png */
     height: 100px;
-    background: url('assets/starship.jpg') no-repeat center/contain;
+    background: url('assets/starship.png') no-repeat center/contain;
+    background-color: transparent; /* Ensure transparency */
     position: absolute;
-    left: 100px;
-    bottom: 100px; /* Adjusted from 500px for full-screen */
+    left: 666.5px; /* Center of right-hand third (533–800px) */
+    top: 200px; /* Center vertically in 400px height */
+    transform: translate(-50%, -50%);
 }
 
 #hud {
@@ -82,9 +84,9 @@ body {
 #event-area {
     border: 4px solid #55FF55;
     position: absolute;
-    top: 75%;
+    top: calc(50% + 220px); /* Below image box (400px/2 + 20px offset) */
     left: 50%;
-    transform: translate(-75%, -50%);
+    transform: translateX(-50%);
     width: 800px;
     text-align: center;
 }
