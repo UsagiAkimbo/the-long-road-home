@@ -1,12 +1,19 @@
 document.addEventListener('DOMContentLoaded', () => {
     // Game state
     let gameState = {
-        distance: 1000,
-        fuel: 100,
-        food: 100,
+        distance: 2250, // 225 million km, scaled
+        fuel: 960, // 960 tons, scaled
+        food: 600, // 600 kg, default for family of 4
         credits: 100,
-        gameOver: false
+        gameOver: false,
+        familySize: 4 // Default, randomized on start
     };
+
+    // Randomize family size (4–6)
+    function randomizeFamilySize() {
+        gameState.familySize = Math.floor(Math.random() * 3) + 4; // 4, 5, or 6
+        gameState.food = gameState.familySize * 150; // 150 kg/person for ~180 days
+        console.log(`Family size set to ${gameState.familySize}, food: ${gameState.food}`);
 
     // Save/Load
     function saveGame() {
@@ -176,7 +183,14 @@ document.addEventListener('DOMContentLoaded', () => {
             restartButton.className = 'choice-button';
             restartButton.textContent = 'Restart';
             restartButton.onclick = () => {
-                gameState = { distance: 1000, fuel: 100, food: 100, credits: 100, gameOver: false };
+                gameState = {
+                    distance: 2250,
+                    fuel: 960,
+                    food: gameState.familySize * 150,
+                    credits: 100,
+                    gameOver: false,
+                    familySize: gameState.familySize
+                };
                 updateStatus();
                 triggerEvent();
                 saveGame();
@@ -198,9 +212,9 @@ document.addEventListener('DOMContentLoaded', () => {
             button.onclick = () => {
                 const result = choice.action();
                 eventText.textContent = result;
-                gameState.distance -= 5;
-                gameState.fuel -= 3;
-                gameState.food -= 3;
+                gameState.distance -= 10; // ~225 events over 6 months
+                gameState.fuel -= 4; // ~960 tons over 225 events
+                gameState.food -= gameState.familySize * 0.67; // ~600–900 kg over 225 events
 
                 if (gameState.fuel <= 0 || gameState.food <= 0) {
                     gameState.gameOver = true;
