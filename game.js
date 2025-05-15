@@ -114,7 +114,7 @@ try {
         add([
             text("The Long Road Home", { size: 48, font: fontName }),
             pos(width() / 2, 50),
-            anchor("center"),
+            origin("center"),
             layer("ui"),
             fixed()
         ]);
@@ -122,14 +122,14 @@ try {
             rect(300, 60),
             pos(15, 65),
             color(0, 0, 0, 0.7),
-            anchor("topleft"),
+            origin("topleft"),
             layer("ui"),
             fixed()
         ]);
         const status = add([
             text("", { size: 24, font: fontName }),
             pos(25, 105),
-            anchor("topleft"),
+            origin("topleft"),
             layer("ui"),
             fixed()
         ]);
@@ -137,14 +137,14 @@ try {
             rect(600, 200),
             pos(width() / 2 - 300, height() / 2 - 100),
             color(0, 0, 0, 0.7),
-            anchor("center"),
+            origin("center"),
             layer("ui"),
             fixed()
         ]);
         const eventText = add([
             text("", { size: 32, font: fontName }),
             pos(width() / 2, height() / 2 - 50),
-            anchor("center"),
+            origin("center"),
             layer("ui"),
             fixed()
         ]);
@@ -288,7 +288,7 @@ try {
                 add([
                     text("Restart", { size: 20, font: fontName }),
                     pos(width() / 2, height() / 2 + 100),
-                    anchor("center"),
+                    origin("center"),
                     layer("ui"),
                     area(),
                     "restart",
@@ -308,7 +308,7 @@ try {
                 add([
                     text(choice.text, { size: 24, font: fontName }),
                     pos(width() / 2, height() / 2 + 20 + index * 40),
-                    anchor("center"),
+                    origin("center"),
                     layer("ui"),
                     area(),
                     "button",
