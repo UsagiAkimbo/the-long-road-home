@@ -68,7 +68,7 @@ try {
 // Load other assets
 function loadAssets() {
     try {
-        loadSprite("boxImage", "assets/box-image.jpg", {
+        loadSprite("boxImage", "assets/space-00.jpg", {
             error: () => console.error("Failed to load image: assets/box-image.jpg")
         });
         loadSprite("ship", "assets/starship.jpg", {
