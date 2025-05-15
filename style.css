@@ -40,7 +40,7 @@ body {
 #ship {
     width: 100px; /* 50% scale of assumed 200x200px starship.png */
     height: 100px;
-    background: url('assets/starship.png') no-repeat center/contain;
+    background: url('assets/starship.jpg') no-repeat center/contain;
     background-color: transparent; /* Ensure transparency */
     position: absolute;
     left: 666.5px; /* Center of right-hand third (533–800px) */
