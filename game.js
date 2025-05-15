@@ -3,17 +3,35 @@ document.addEventListener('DOMContentLoaded', () => {
     let gameState = {
         distance: 2250, // 225 million km, scaled
         fuel: 960, // 960 tons, scaled
-        food: 600, // 600 kg, default for family of 4
+        food: 600, // Default for family of 4
         credits: 100,
         gameOver: false,
-        familySize: 4 // Default, randomized on start
+        familySize: 4,
+        crew: [] // Array of {name, conditions, mood}
     };
 
-    // Randomize family size (4–6)
-    function randomizeFamilySize() {
-        gameState.familySize = Math.floor(Math.random() * 3) + 4; // 4, 5, or 6
-        gameState.food = gameState.familySize * 150; // 150 kg/person for ~180 days
-        console.log(`Family size set to ${gameState.familySize}, food: ${gameState.food}`);
+    // xAI-generated crew names
+    const crewNames = [
+        'Zara Klyne', 'Torin Vex', 'Elara Syn', 'Kael Dracon', 'Nova Quill',
+        'Jaxon Holt', 'Selene Vox', 'Ryn Solaris', 'Aria Zenith', 'Cassian Flux',
+        'Lyra Nexis', 'Dax Orion', 'Mira Celest', 'Soren Kade', 'Veda Starling',
+        'Zane Pulsar', 'Taryn Eclipse', 'Lila Cosmo', 'Finn Graviton', 'Esme Lumen'
+    ];
+
+    // Randomize crew
+    function randomizeCrew() {
+        gameState.familySize = Math.floor(Math.random() * 3) + 4; // 4–6
+        gameState.food = gameState.familySize * 150; // 150 kg/person
+        gameState.crew = [];
+        const shuffledNames = crewNames.sort(() => Math.random() - 0.5);
+        for (let i = 0; i < gameState.familySize; i++) {
+            gameState.crew.push({
+                name: shuffledNames[i],
+                conditions: [], // sick, injured, disabled, starving, distraught
+                mood: 'content' // happy, content, accepting, disgruntled, unhappy
+            });
+        }
+        console.log(`Crew initialized: ${gameState.familySize} members`, gameState.crew);
     }
 
     // Save/Load
@@ -27,6 +45,9 @@ document.addEventListener('DOMContentLoaded', () => {
             gameState = JSON.parse(saved);
             console.log('Game state loaded');
             updateStatus();
+            updateCrew();
+        } else {
+            randomizeCrew();
         }
     }
     loadGame();
@@ -63,6 +84,9 @@ document.addEventListener('DOMContentLoaded', () => {
             choices: [
                 { text: "Ration", action: () => {
                     gameState.food -= 10;
+                    gameState.crew.forEach(member => {
+                        if (Math.random() < 0.3) member.mood = 'disgruntled';
+                    });
                     return "Family grumbles but survives.";
                 }},
                 { text: "Buy", action: () => {
@@ -104,7 +128,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     return "Path cleared!";
                 }},
                 { text: "Maneuver", action: () => {
-                    return Math.random() < 0.8 ? "Smooth sailing!" : (gameState.credits -= 10, "Minor scrape. -10 credits.");
+                    return Math.random() < 0.8 ? "Smooth sailing!" : (gameState.credits -= 10, "Hull scraped! -10 credits.");
                 }}
             ]
         },
@@ -113,11 +137,15 @@ document.addEventListener('DOMContentLoaded', () => {
             choices: [
                 { text: "Supplies", action: () => {
                     gameState.credits -= 15;
+                    const member = gameState.crew[Math.floor(Math.random() * gameState.familySize)];
+                    member.conditions = member.conditions.filter(c => c !== 'sick');
                     return "They recover fully.";
                 }},
                 { text: "Clinic", action: () => {
                     gameState.distance += 15;
                     gameState.credits -= 10;
+                    const member = gameState.crew[Math.floor(Math.random() * gameState.familySize)];
+                    member.conditions = member.conditions.filter(c => c !== 'sick');
                     return "Professional care succeeds.";
                 }}
             ]
@@ -130,7 +158,15 @@ document.addEventListener('DOMContentLoaded', () => {
                     return "Pirates leave you alone.";
                 }},
                 { text: "Fight", action: () => {
-                    return Math.random() < 0.6 ? (gameState.credits += 10, "Pirates retreat! +10 credits.") : (gameState.fuel -= 15, "Damage taken! -15 fuel.");
+                    if (Math.random() < 0.6) {
+                        gameState.credits += 10;
+                        return "Pirates retreat! +10 credits.";
+                    } else {
+                        gameState.fuel -= 15;
+                        const member = gameState.crew[Math.floor(Math.random() * gameState.familySize)];
+                        if (!member.conditions.includes('injured')) member.conditions.push('injured');
+                        return "Damage taken! -15 fuel.";
+                    }
                 }}
             ]
         },
@@ -158,6 +194,148 @@ document.addEventListener('DOMContentLoaded', () => {
                 }},
                 { text: "Decline", action: () => "You pass on the offer." }
             ]
+        },
+        {
+            text: "Radiation leak in quarters. Seal area or evacuate?",
+            choices: [
+                { text: "Seal Area", action: () => {
+                    gameState.credits -= 15;
+                    return "Leak contained.";
+                }},
+                { text: "Evacuate", action: () => {
+                    gameState.distance += 10;
+                    return "Crew safe, but progress slows.";
+                }}
+            ]
+        },
+        {
+            text: "Navigation error detected. Recalibrate or burn extra fuel?",
+            choices: [
+                { text: "Recalibrate", action: () => {
+                    gameState.credits -= 10;
+                    return Math.random() < 0.8 ? "Course corrected." : (gameState.distance += 5, "Minor delay.");
+                }},
+                { text: "Burn Fuel", action: () => {
+                    gameState.fuel -= 15;
+                    return "Back on track.";
+                }}
+            ]
+        },
+        {
+            text: "Oxygen filter fails. Replace it or ration air?",
+            choices: [
+                { text: "Replace", action: () => {
+                    gameState.credits -= 20;
+                    return "Breathing restored.";
+                }},
+                { text: "Ration", action: () => {
+                    gameState.food -= 5;
+                    gameState.crew.forEach(member => {
+                        if (Math.random() < 0.3) member.mood = 'unhappy';
+                    });
+                    return "Crew manages, but morale dips.";
+                }}
+            ]
+        },
+        {
+            text: "Solar panel malfunctions. Repair or divert fuel?",
+            choices: [
+                { text: "Repair", action: () => {
+                    gameState.credits -= 15;
+                    return "Power restored.";
+                }},
+                { text: "Divert Fuel", action: () => {
+                    gameState.fuel -= 10;
+                    return "Backup power online.";
+                }}
+            ]
+        },
+        {
+            text: "Communication blackout with Earth. Boost signal or wait?",
+            choices: [
+                { text: "Boost Signal", action: () => {
+                    gameState.fuel -= 10;
+                    return "Contact restored.";
+                }},
+                { text: "Wait", action: () => {
+                    gameState.distance += 10;
+                    return "Signal returns, but delayed.";
+                }}
+            ]
+        },
+        {
+            text: "Crew conflict escalates. Mediate or let it resolve?",
+            choices: [
+                { text: "Mediate", action: () => {
+                    gameState.food -= 10;
+                    gameState.crew.forEach(member => {
+                        if (Math.random() < 0.5) member.mood = 'content';
+                    });
+                    return "Harmony restored.";
+                }},
+                { text: "Let Resolve", action: () => {
+                    if (Math.random() < 0.6) {
+                        return "Crew works it out.";
+                    } else {
+                        gameState.credits -= 5;
+                        gameState.crew.forEach(member => {
+                            if (Math.random() < 0.3) member.mood = 'disgruntled';
+                        });
+                        return "Morale suffers. -5 credits.";
+                    }
+                }}
+            ]
+        },
+        {
+            text: "Micrometeorite damages hull. Patch now or later?",
+            choices: [
+                { text: "Patch Now", action: () => {
+                    gameState.credits -= 20;
+                    return "Hull secured.";
+                }},
+                { text: "Patch Later", action: () => {
+                    return Math.random() < 0.7 ? "No further damage." : (gameState.fuel -= 10, "Fuel leaks. -10 fuel.");
+                }}
+            ]
+        },
+        {
+            text: "Water recycler jams. Fix or ration water?",
+            choices: [
+                { text: "Fix", action: () => {
+                    gameState.credits -= 15;
+                    return "Water supply restored.";
+                }},
+                { text: "Ration", action: () => {
+                    gameState.food -= 5;
+                    gameState.crew.forEach(member => {
+                        if (Math.random() < 0.3) member.mood = 'unhappy';
+                    });
+                    return "Crew copes, but unhappy.";
+                }}
+            ]
+        },
+        {
+            text: "Rare cosmic phenomenon detected. Study or stay on course?",
+            choices: [
+                { text: "Study", action: () => {
+                    gameState.distance += 10;
+                    return Math.random() < 0.5 ? (gameState.credits += 20, "Data sold! +20 credits.") : "No usable data.";
+                }},
+                { text: "Stay on Course", action: () => "Progress continues." }
+            ]
+        },
+        {
+            text: "Power surge threatens systems. Shut down or reroute?",
+            choices: [
+                { text: "Shut Down", action: () => {
+                    gameState.distance += 10;
+                    return "Systems safe.";
+                }},
+                { text: "Reroute", action: () => {
+                    gameState.fuel -= 15;
+                    return "Power stabilized.";
+                }}
+            ]
         }
     ];
 
@@ -168,13 +346,64 @@ document.addEventListener('DOMContentLoaded', () => {
     const fuelSpan = document.getElementById('fuel');
     const foodSpan = document.getElementById('food');
     const creditsSpan = document.getElementById('credits');
+    const familySpan = document.getElementById('family');
+    const crewList = document.getElementById('crew-list');
 
     function updateStatus() {
         distanceSpan.textContent = gameState.distance;
-        fuelSpan.textContent = gameState.fuel;
-        foodSpan.textContent = gameState.food;
+        fuelSpan.textContent = gameState.fuel.toFixed(1);
+        foodSpan.textContent = gameState.food.toFixed(1);
         creditsSpan.textContent = gameState.credits;
+        familySpan.textContent = gameState.familySize;
         console.log('Status updated:', gameState);
+    }
+
+    function updateCrew() {
+        crewList.innerHTML = '';
+        gameState.crew.forEach(member => {
+            const memberDiv = document.createElement('div');
+            memberDiv.className = 'crew-member';
+            memberDiv.innerHTML = `
+                <span>${member.name}</span>
+                ${member.conditions.includes('sick') ? '<img src="assets/sick.png" class="condition-icon" alt="Sick">' : ''}
+                ${member.conditions.includes('injured') ? '<img src="assets/injured.png" class="condition-icon" alt="Injured">' : ''}
+                ${member.conditions.includes('disabled') ? '<img src="assets/disabled.png" class="condition-icon" alt="Disabled">' : ''}
+                ${member.conditions.includes('starving') ? '<img src="assets/starving.png" class="condition-icon" alt="Starving">' : ''}
+                ${member.conditions.includes('distraught') ? '<img src="assets/distraught.png" class="condition-icon" alt="Distraught">' : ''}
+                <img src="assets/${member.mood}.png" class="mood-icon" alt="${member.mood}">
+            `;
+            crewList.appendChild(memberDiv);
+        });
+        console.log('Crew updated:', gameState.crew);
+    }
+
+    function updateConditionsAndMood() {
+        gameState.crew.forEach(member => {
+            // Starving condition
+            if (gameState.food <= 0 && !member.conditions.includes('starving')) {
+                member.conditions.push('starving');
+                member.mood = 'unhappy';
+            } else if (gameState.food > 0 && member.conditions.includes('starving')) {
+                member.conditions = member.conditions.filter(c => c !== 'starving');
+            }
+            // Mood adjustments
+            if (gameState.food < 100 || member.conditions.length > 0) {
+                if (member.mood === 'happy' || member.mood === 'content') {
+                    member.mood = 'accepting';
+                } else if (member.mood === 'accepting') {
+                    member.mood = 'disgruntled';
+                }
+            } else if (gameState.food > 300 && member.conditions.length === 0) {
+                if (member.mood === 'disgruntled' || member.mood === 'unhappy') {
+                    member.mood = 'accepting';
+                } else if (member.mood === 'accepting') {
+                    member.mood = 'content';
+                } else if (member.mood === 'content' && Math.random() < 0.1) {
+                    member.mood = 'happy';
+                }
+            }
+        });
+        updateCrew();
     }
 
     function triggerEvent() {
@@ -190,9 +419,15 @@ document.addEventListener('DOMContentLoaded', () => {
                     food: gameState.familySize * 150,
                     credits: 100,
                     gameOver: false,
-                    familySize: gameState.familySize
+                    familySize: gameState.familySize,
+                    crew: gameState.crew.map(member => ({
+                        name: member.name,
+                        conditions: [],
+                        mood: 'content'
+                    }))
                 };
                 updateStatus();
+                updateCrew();
                 triggerEvent();
                 saveGame();
             };
@@ -213,9 +448,14 @@ document.addEventListener('DOMContentLoaded', () => {
             button.onclick = () => {
                 const result = choice.action();
                 eventText.textContent = result;
-                gameState.distance -= 10; // ~225 events over 6 months
-                gameState.fuel -= 4; // ~960 tons over 225 events
-                gameState.food -= gameState.familySize * 0.67; // ~600–900 kg over 225 events
+                gameState.distance -= 10;
+                gameState.fuel -= 4;
+                let foodDecrement = gameState.familySize * 0.67;
+                gameState.crew.forEach(member => {
+                    if (member.conditions.length > 0) foodDecrement += 0.1; // Extra food for conditions
+                    if (['disgruntled', 'unhappy'].includes(member.mood)) gameState.credits -= 1; // Inefficiency
+                });
+                gameState.food -= foodDecrement;
 
                 if (gameState.fuel <= 0 || gameState.food <= 0) {
                     gameState.gameOver = true;
@@ -224,12 +464,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
 
                 updateStatus();
+                updateConditionsAndMood();
                 saveGame();
 
                 if (!gameState.gameOver) {
                     setTimeout(triggerEvent, 1000);
                 } else {
-                    triggerEvent(); // Show game over
+                    triggerEvent();
                 }
                 console.log('Choice made:', choice.text, 'Result:', result);
             };
@@ -240,6 +481,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Start game
     updateStatus();
+    updateCrew();
     triggerEvent();
     console.log('Game started');
 });
