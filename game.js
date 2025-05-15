@@ -12,28 +12,6 @@ try {
     console.error("Kaboom initialization failed:", err);
 }
 
-// Force canvas redraw
-function forceRedraw() {
-    requestAnimationFrame(() => {
-        // Trigger a render by updating the canvas
-        scene("main", () => {});
-        go("main");
-        console.log("Canvas redraw triggered");
-    });
-}
-
-// Handle window resize
-window.onresize = () => {
-    try {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-        console.log("Canvas resized to", window.innerWidth, window.innerHeight);
-        forceRedraw();
-    } catch (err) {
-        console.error("Resize failed:", err);
-    }
-};
-
 // Define layers
 try {
     layers(["bg", "obj", "ui"], "obj");
@@ -50,50 +28,29 @@ try {
         document.fonts.add(font);
         fontLoaded = true;
         console.log("VT323 font preloaded successfully");
-        // Initialize game after font preload
-        initGame();
-        forceRedraw();
-    }).catch(err => {
-        console.error("FontFace preload failed:", err);
-        // Proceed with fallback font
-        initGame();
-        forceRedraw();
-    });
+    }).catch(err => console.error("FontFace preload failed:", err));
 } catch (err) {
     console.error("FontFace setup failed:", err);
-    initGame();
-    forceRedraw();
 }
 
-// Load other assets
-function loadAssets() {
-    try {
-        loadSprite("boxImage", "assets/space-00.jpg", {
-            error: () => console.error("Failed to load image: assets/box-image.jpg")
+// Load assets and initialize game
+try {
+    loadSprite("boxImage", "assets/space-00.jpg", {
+        error: () => console.error("Failed to load image: assets/space-00.jpg")
+    });
+    loadSprite("ship", "assets/starship.jpg", {
+        error: () => console.error("Failed to load image: assets/starship.jpg")
+    });
+    console.log("Sprite loading initiated for boxImage and ship");
+
+    // Wait for all assets to load
+    onLoad(() => {
+        console.log("All assets loaded successfully");
+
+        // Force initial render
+        requestAnimationFrame(() => {
+            console.log("Initial render triggered");
         });
-        loadSprite("ship", "assets/starship.jpg", {
-            error: () => console.error("Failed to load image: assets/starship.jpg")
-        });
-        console.log("Assets loaded successfully");
-    } catch (err) {
-        console.error("Asset loading failed:", err);
-    }
-}
-
-// Save
-function saveGame() {
-    localStorage.setItem("gameState", JSON.stringify(gameState));
-}
-// Load
-function loadGame() {
-    const saved = localStorage.getItem("gameState");
-    if (saved) gameState = JSON.parse(saved);
-}
-
-// Game initialization
-function initGame() {
-    try {
-        loadAssets();
 
         // Add image box (800x400, rounded)
         add([
@@ -107,17 +64,20 @@ function initGame() {
             rect(800, 400, { radius: 20 }),
             pos(width() / 2 - 400, height() / 2 - 200),
             color(0, 0, 0, 0),
-            outline(4, [51, 204, 51]),
+            outline(4, [85, 255, 85]),
             layer("bg"),
             fixed()
         ]);
+        console.log("Image box added successfully");
 
+        // Add ship sprite
         add([
             sprite("ship"),
             pos(100, 500),
             scale(0.5),
             layer("obj")
         ]);
+        console.log("Ship sprite added successfully");
 
         // Game state
         let gameState = {
@@ -127,6 +87,67 @@ function initGame() {
             credits: 100,
             gameOver: false
         };
+
+        // Save/Load
+        function saveGame() {
+            localStorage.setItem("gameState", JSON.stringify(gameState));
+            console.log("Game state saved");
+        }
+        function loadGame() {
+            const saved = localStorage.getItem("gameState");
+            if (saved) {
+                gameState = JSON.parse(saved);
+                console.log("Game state loaded");
+            }
+        }
+        loadGame(); // Load saved state on start
+
+        // HUD: UI
+        const fontName = fontLoaded ? "vt323" : "apl386"; // Fallback
+        add([
+            rect(350, 60),
+            pos(20, 100),
+            color(0, 0, 0, 0.7),
+            layer("ui"),
+            fixed()
+        ]);
+        add([
+            text("The Long Road Home", { size: 48, font: fontName }),
+            pos(width() / 2, 50),
+            anchor("center"),
+            layer("ui"),
+            fixed()
+        ]);
+        add([
+            rect(300, 60),
+            pos(15, 65),
+            color(0, 0, 0, 0.7),
+            anchor("topleft"),
+            layer("ui"),
+            fixed()
+        ]);
+        const status = add([
+            text("", { size: 24, font: fontName }),
+            pos(25, 105),
+            anchor("topleft"),
+            layer("ui"),
+            fixed()
+        ]);
+        add([
+            rect(600, 200),
+            pos(width() / 2 - 300, height() / 2 - 100),
+            color(0, 0, 0, 0.7),
+            anchor("center"),
+            layer("ui"),
+            fixed()
+        ]);
+        const eventText = add([
+            text("", { size: 32, font: fontName }),
+            pos(width() / 2, height() / 2 - 50),
+            anchor("center"),
+            layer("ui"),
+            fixed()
+        ]);
 
         // Events
         const events = [
@@ -250,7 +271,7 @@ function initGame() {
                 choices: [
                     { text: "Trade", action: () => {
                         gameState.credits -= 20;
-                        gameState.fuel += 20;
+                        gameState.food += 20;
                         return "Pantry restocked!";
                     }},
                     { text: "Decline", action: () => "You pass on the offer." }
@@ -274,7 +295,6 @@ function initGame() {
             layer("ui"),
             fixed()
         ]);
-
         add([
             rect(300, 60),
             pos(15, 65),
@@ -290,7 +310,6 @@ function initGame() {
             layer("ui"),
             fixed()
         ]);
-
         add([
             rect(600, 200),
             pos(width() / 2 - 300, height() / 2 - 100),
@@ -313,8 +332,8 @@ function initGame() {
 
         function triggerEvent() {
             if (gameState.gameOver) {
-               add([
-                    text("Restart", { size: 20, font: "apl386" }),
+                add([
+                    text("Restart", { size: 20, font: fontName }),
                     pos(width() / 2, height() / 2 + 100),
                     anchor("center"),
                     layer("ui"),
@@ -359,6 +378,7 @@ function initGame() {
                             setTimeout(triggerEvent, 1000);
                         }
                         updateStatus();
+                        saveGame(); // Save state after each event
                     }}
                 ]);
             });
@@ -370,7 +390,7 @@ function initGame() {
         // Start game
         updateStatus();
         triggerEvent();
-    } catch (err) {
-        console.error("Game initialization failed:", err);
-    }
+    });
+} catch (err) {
+    console.error("Game initialization failed:", err);
 }
