@@ -83,11 +83,11 @@ body {
 
 #event-area {
     border: 4px solid #55FF55;
+    width: 800px;
     position: absolute;
     top: calc(50% + 220px); /* Below image box (400px/2 + 20px offset) */
     left: 50%;
     transform: translateX(-50%);
-    width: 800px;
     text-align: center;
 }
 
