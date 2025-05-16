@@ -159,24 +159,24 @@ body {
 #crew-title {
     font-size: 32px;
     color: #55FF55;
-    margin: 20px 0;
+    margin: 2px 0;
     text-align: center;
 }
 
 #crew-list {
     font-size: 24px;
     color: #55FF55;
-    padding: 0 10px;
+    padding: 0 1px;
 }
 
 .crew-member {
-    margin: 10px 0;
+    margin: 1px 0;
     display: flex;
     align-items: center;
 }
 
 .crew-member span {
-    margin-right: 10px;
+    margin-right: 1px;
 }
 
 .condition-icon, .mood-icon {
