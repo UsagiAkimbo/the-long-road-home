@@ -50,7 +50,6 @@ document.addEventListener('DOMContentLoaded', () => {
             randomizeCrew();
         }
     }
-    loadGame();
 
     // Events
     const events = [
@@ -480,6 +479,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Start game
+    loadGame();
     updateStatus();
     updateCrew();
     triggerEvent();
