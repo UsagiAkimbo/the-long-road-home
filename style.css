@@ -31,7 +31,7 @@ body {
     background: url('assets/space-00.jpg') no-repeat center/cover;
     border: 4px solid #55FF55;
     position: absolute;
-    top: 50%;
+    top: 288px;
     left: 50%;
     transform: translate(-50%, -50%);
     box-shadow: 0 0 3px #55FF55; /* Glowing shadow */
@@ -86,7 +86,7 @@ body {
     width: 600px;
     border: 4px solid #55FF55;
     position: absolute;
-    top: calc(50% + 250px); /* Adjusted to clear image box */
+    top: 708px;
     left: 50%;
     transform: translateX(-50%);
     text-align: center;
@@ -161,12 +161,16 @@ body {
     color: #55FF55;
     margin: 2px 0;
     text-align: center;
+    position: relative;
 }
 
 #crew-list {
     font-size: 24px;
     color: #55FF55;
     padding: 0 1px;
+    max-height: calc(100vh - 80px); 
+    overflow-y: auto;
+    position: relative;
 }
 
 .crew-member {
