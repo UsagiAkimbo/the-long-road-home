@@ -488,7 +488,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Start game
-    //loadGame();
+    loadGame();
     updateStatus();
     updateCrew();
     triggerEvent();
