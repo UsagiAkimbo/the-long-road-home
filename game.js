@@ -347,6 +347,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const creditsSpan = document.getElementById('credits');
     const familySpan = document.getElementById('family');
     const crewList = document.getElementById('crew-list');
+    const statusList = document.getElementById('status-list');
 
     function updateStatus() {
         distanceSpan.textContent = gameState.distance;
