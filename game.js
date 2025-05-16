@@ -354,6 +354,15 @@ document.addEventListener('DOMContentLoaded', () => {
         foodSpan.textContent = gameState.food.toFixed(1);
         creditsSpan.textContent = gameState.credits;
         familySpan.textContent = gameState.familySize;
+
+        // Update status list
+        statusList.innerHTML = `
+            <div class="status-item">Distance: ${gameState.distance} M km</div>
+            <div class="status-item">Fuel: ${gameState.fuel.toFixed(1)} tons</div>
+            <div class="status-item">Food: ${gameState.food.toFixed(1)} kg</div>
+            <div class="status-item">Credits: ${gameState.credits}</div>
+            <div class="status-item">Family: ${gameState.familySize}</div>
+        `;
         console.log('Status updated:', gameState);
     }
 
