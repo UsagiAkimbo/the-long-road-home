@@ -341,13 +341,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // DOM elements
     const eventText = document.getElementById('event-text');
     const choicesDiv = document.getElementById('choices');
-    const distanceSpan = document.getElementById('distance');
-    const fuelSpan = document.getElementById('fuel');
-    const foodSpan = document.getElementById('food');
-    const creditsSpan = document.getElementById('credits');
-    const familySpan = document.getElementById('family');
-    const crewList = document.getElementById('crew-list');
     const statusList = document.getElementById('status-list');
+    const crewList = document.getElementById('crew-list');
 
     function updateStatus() {
         distanceSpan.textContent = gameState.distance;
