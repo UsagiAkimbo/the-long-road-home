@@ -61,7 +61,7 @@ body {
     font-size: 48px;
     color: #55FF55;
     margin: 20px 0;
-    text-shadow: 0 0 5px #55FF55; /* Text glow */
+    text-shadow: 0 0 4px #55FF55; /* Text glow */
 }
 
 #event-area {
@@ -157,7 +157,7 @@ body {
     max-height: calc(100% - 60px);
     overflow-y: auto;
     position: relative;
-    text-shadow: 0 0 5px #55FF55; /* Text glow */
+    text-shadow: 0 0 7px #55FF55; /* Text glow */
 }
 
 .status-item {
@@ -198,7 +198,7 @@ body {
     max-height: calc(100% - 60px);
     overflow-y: auto;
     position: relative;
-    text-shadow: 0 0 5px #55FF55; /* Text glow */
+    text-shadow: 0 0 7px #55FF55; /* Text glow */
 }
 
 .crew-member {
