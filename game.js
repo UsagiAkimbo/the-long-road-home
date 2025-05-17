@@ -56,10 +56,27 @@ document.addEventListener('DOMContentLoaded', () => {
     function loadGame() {
         const saved = localStorage.getItem('gameState');
         if (saved) {
-            gameState = JSON.parse(saved);
-            console.log('Game state loaded');
-            updateStatus();
-            updateCrew();
+            try {
+                const parsedState = JSON.parse(saved);
+                // Merge saved state with defaults to handle missing properties
+                gameState = {
+                    ...defaultGameState,
+                    ...parsedState,
+                    crew: parsedState.crew || [], // Ensure crew is an array
+                    familySize: parsedState.familySize || 4
+                };
+                // Ensure parts is defined
+                if (gameState.parts === undefined) {
+                    gameState.parts = 500;
+                    console.log('Added missing parts to gameState');
+                }
+                console.log('Game state loaded', gameState);
+                updateStatus();
+                updateCrew();
+            } catch (e) {
+                console.error('Failed to parse saved game state:', e);
+                randomizeCrew();
+            }
         } else {
             randomizeCrew();
         }
