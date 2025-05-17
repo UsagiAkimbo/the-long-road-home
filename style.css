@@ -215,4 +215,5 @@ body {
     width: 24px;
     height: 24px;
     margin-left: 5px;
+    box-shadow: 0 0 5px #55FF55; /* Image glow */
 }
