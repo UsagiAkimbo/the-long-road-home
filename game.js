@@ -64,8 +64,21 @@ document.addEventListener('DOMContentLoaded', () => {
             randomizeCrew();
         }
     }
-    loadGame();
 
+     // Array of setting-themed deaths
+    const deathCauses = [
+        'radiation poisoning from a shield failure',
+        'asphyxiation due to a life support failure',
+        'decompression sickness from a hull breach',
+        'electrical shock during repairs',
+        'crush injury from a malfunctioning cargo bay door',
+        'thermal burns from overheating equipment',
+        'toxic chemical exposure from a coolant leak',
+        'impact trauma from debris collision',
+        'hypothermia from a thermal system failure',
+        'cardiac arrest from extreme stress'
+    ];
+    
     // Events
     const events = [
         {
@@ -189,7 +202,7 @@ document.addEventListener('DOMContentLoaded', () => {
             choices: [
                 { text: "Patch", action: () => {
                     gameState.credits -= 15;
-                    gameState.parts -= 15; // Use parts for repair
+                    gameState.parts -= 15;
                     return "Leak fixed, fuel saved.";
                 }},
                 { text: "Conserve", action: () => {
@@ -215,7 +228,7 @@ document.addEventListener('DOMContentLoaded', () => {
             choices: [
                 { text: "Seal Area", action: () => {
                     gameState.credits -= 15;
-                    gameState.parts -= 10; // Use parts for sealing
+                    gameState.parts -= 10;
                     return "Leak contained.";
                 }},
                 { text: "Evacuate", action: () => {
@@ -242,7 +255,7 @@ document.addEventListener('DOMContentLoaded', () => {
             choices: [
                 { text: "Replace", action: () => {
                     gameState.credits -= 20;
-                    gameState.parts -= 15; // Use parts for filter
+                    gameState.parts -= 15;
                     return "Breathing restored.";
                 }},
                 { text: "Ration", action: () => {
@@ -259,7 +272,7 @@ document.addEventListener('DOMContentLoaded', () => {
             choices: [
                 { text: "Repair", action: () => {
                     gameState.credits -= 15;
-                    gameState.parts -= 10; // Use parts for repair
+                    gameState.parts -= 10;
                     return "Power restored.";
                 }},
                 { text: "Divert Fuel", action: () => {
@@ -309,7 +322,7 @@ document.addEventListener('DOMContentLoaded', () => {
             choices: [
                 { text: "Patch Now", action: () => {
                     gameState.credits -= 20;
-                    gameState.parts -= 15; // Use parts for patching
+                    gameState.parts -= 15;
                     return "Hull secured.";
                 }},
                 { text: "Patch Later", action: () => {
@@ -322,7 +335,7 @@ document.addEventListener('DOMContentLoaded', () => {
             choices: [
                 { text: "Fix", action: () => {
                     gameState.credits -= 15;
-                    gameState.parts -= 10; // Use parts for repair
+                    gameState.parts -= 10;
                     return "Water supply restored.";
                 }},
                 { text: "Ration", action: () => {
@@ -457,6 +470,188 @@ document.addEventListener('DOMContentLoaded', () => {
                     return "Bought 10 food, fuel, parts for 30 credits.";
                 }},
                 { text: "Decline", action: () => "You pass on the deal." }
+            ]
+        },
+        {
+            text: "The life support system glitches, reducing oxygen levels. Emergency reboot or manual bypass?",
+            choices: [
+                { text: "Reboot", action: () => {
+                    gameState.parts -= 15;
+                    gameState.credits -= 10;
+                    return "Oxygen restored.";
+                }},
+                { text: "Bypass", action: () => {
+                    gameState.food -= 5;
+                    if (Math.random() < 0.3) {
+                        const member = gameState.crew[Math.floor(Math.random() * gameState.familySize)];
+                        if (!member.conditions.includes('distraught')) member.conditions.push('distraught');
+                    }
+                    return "Bypass successful, crew strained.";
+                }}
+            ]
+        },
+        {
+            text: "An unexpected asteroid field blocks your path. Plot a precise course or power through?",
+            choices: [
+                { text: "Precise Course", action: () => {
+                    gameState.distance += 10;
+                    return "Safe passage.";
+                }},
+                { text: "Power Through", action: () => {
+                    gameState.fuel -= 15;
+                    return Math.random() < 0.6 ? "Cleared field!" : (gameState.parts -= 10, "Hull grazed, parts lost.");
+                }}
+            ]
+        },
+        {
+            text: "The thermal regulation system fails, risking overheating. Vent heat or reduce power?",
+            choices: [
+                { text: "Vent Heat", action: () => {
+                    gameState.fuel -= 15;
+                    return "Systems cooled.";
+                }},
+                { text: "Reduce Power", action: () => {
+                    gameState.distance += 10;
+                    return "Temperature stabilized, progress slowed.";
+                }}
+            ]
+        },
+        {
+            text: "The crew shows signs of extreme fatigue. Enforce rest or push forward?",
+            choices: [
+                { text: "Enforce Rest", action: () => {
+                    gameState.food -= 10;
+                    gameState.crew.forEach(member => {
+                        if (Math.random() < 0.5) member.mood = 'content';
+                    });
+                    return "Crew refreshed.";
+                }},
+                { text: "Push Forward", action: () => {
+                    if (Math.random() < 0.3) {
+                        const member = gameState.crew[Math.floor(Math.random() * gameState.familySize)];
+                        if (!member.conditions.includes('distraught')) member.conditions.push('distraught');
+                    }
+                    return "Crew pushes on, but strained.";
+                }}
+            ]
+        },
+        {
+            text: "A radiation shield panel is breached. Repair now or reroute power?",
+            choices: [
+                { text: "Repair", action: () => {
+                    gameState.parts -= 15;
+                    gameState.credits -= 10;
+                    return "Shield restored.";
+                }},
+                { text: "Reroute Power", action: () => {
+                    gameState.fuel -= 15;
+                    return "Radiation mitigated, fuel consumed.";
+                }}
+            ]
+        },
+        {
+            text: "The propulsion system risks overload. Cool it down or throttle back?",
+            choices: [
+                { text: "Cool Down", action: () => {
+                    gameState.parts -= 15;
+                    return "Propulsion stabilized.";
+                }},
+                { text: "Throttle Back", action: () => {
+                    gameState.distance += 10;
+                    return "Overload prevented, progress slowed.";
+                }}
+            ]
+        },
+        {
+            text: "Critical navigation data is corrupted. Recompute or use backups?",
+            choices: [
+                { text: "Recompute", action: () => {
+                    gameState.credits -= 15;
+                    return "Data restored.";
+                }},
+                { text: "Use Backups", action: () => {
+                    gameState.distance += 10;
+                    return "Backups loaded, progress delayed.";
+                }}
+            ]
+        },
+        {
+            text: "Microfractures are detected in the hull. Seal them or monitor?",
+            choices: [
+                { text: "Seal", action: () => {
+                    gameState.parts -= 10;
+                    gameState.credits -= 10;
+                    return "Fractures sealed.";
+                }},
+                { text: "Monitor", action: () => {
+                    return Math.random() < 0.7 ? "No issues detected." : (gameState.fuel -= 10, "Leaks worsen, fuel lost.");
+                }}
+            ]
+        },
+        {
+            text: "A crew experiment goes wrong, risking equipment. Abort or salvage?",
+            choices: [
+                { text: "Abort", action: () => {
+                    gameState.credits -= 10;
+                    return "Experiment halted.";
+                }},
+                { text: "Salvage", action: () => {
+                    if (Math.random() < 0.8) {
+                        gameState.credits += 10;
+                        return "Equipment saved, +10 credits!";
+                    } else {
+                        const member = gameState.crew[Math.floor(Math.random() * gameState.familySize)];
+                        if (!member.conditions.includes('injured')) member.conditions.push('injured');
+                        return "Crew injured.";
+                    }
+                }}
+            ]
+        },
+        {
+            text: "A solar wind surge disrupts electronics. Reinforce shields or power down?",
+            choices: [
+                { text: "Reinforce Shields", action: () => {
+                    gameState.parts -= 10;
+                    gameState.fuel -= 10;
+                    return "Electronics protected.";
+                }},
+                { text: "Power Down", action: () => {
+                    gameState.distance += 10;
+                    return "Systems safe, progress slowed.";
+                }}
+            ]
+        },
+        {
+            text: "A tragic incident claims a crew member’s life. [Cause]. Mourn or press on?",
+            choices: [
+                { text: "Mourn", action: () => {
+                    const memberIndex = Math.floor(Math.random() * gameState.familySize);
+                    const member = gameState.crew[memberIndex];
+                    const cause = deathCauses[Math.floor(Math.random() * deathCauses.length)];
+                    gameState.crew.splice(memberIndex, 1);
+                    gameState.familySize -= 1;
+                    gameState.distance += 10;
+                    gameState.food -= 10;
+                    gameState.crew.forEach(m => {
+                        if (Math.random() < 0.5) m.mood = 'distraught';
+                    });
+                    return `${member.name} dies from ${cause}. The crew mourns, morale suffers.`;
+                }},
+                { text: "Press On", action: () => {
+                    const memberIndex = Math.floor(Math.random() * gameState.familySize);
+                    const member = gameState.crew[memberIndex];
+                    const cause = deathCauses[Math.floor(Math.random() * deathCauses.length)];
+                    gameState.crew.splice(memberIndex, 1);
+                    gameState.familySize -= 1;
+                    const moraleHit = Math.random() < 0.7;
+                    if (moraleHit) {
+                        gameState.crew.forEach(m => {
+                            if (!m.conditions.includes('distraught')) m.conditions.push('distraught');
+                        });
+                        return `${member.name} dies from ${cause}. Crew resents the decision.`;
+                    }
+                    return `${member.name} dies from ${cause}. Crew stays focused.`;
+                }}
             ]
         }
     ];
@@ -607,6 +802,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Start game
+    loadGame();
     updateStatus();
     updateCrew();
     triggerEvent();
