@@ -1,13 +1,26 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // DOM elements
+    const eventText = document.getElementById('event-text');
+    const choicesDiv = document.getElementById('choices');
+    const statusList = document.getElementById('status-list');
+    const crewList = document.getElementById('crew-list');
+
+    // Debug missing elements
+    if (!eventText) console.error('Element #event-text not found');
+    if (!choicesDiv) console.error('Element #choices not found');
+    if (!statusList) console.error('Element #status-list not found');
+    if (!crewList) console.error('Element #crew-list not found');
+
     // Game state
     let gameState = {
-        distance: 2250, // 225 million km, scaled
-        fuel: 960, // 960 tons, scaled
-        food: 600, // Default for family of 4
+        distance: 2250,
+        fuel: 960,
+        food: 600,
         credits: 100,
+        parts: 500, // New resource
         gameOver: false,
         familySize: 4,
-        crew: [] // Array of {name, conditions, mood}
+        crew: []
     };
 
     // xAI-generated crew names
@@ -20,15 +33,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Randomize crew
     function randomizeCrew() {
-        gameState.familySize = Math.floor(Math.random() * 3) + 4; // 4–6
-        gameState.food = gameState.familySize * 150; // 150 kg/person
+        gameState.familySize = Math.floor(Math.random() * 3) + 4;
+        gameState.food = gameState.familySize * 150;
+        gameState.parts = 500; // Initialize parts
         gameState.crew = [];
         const shuffledNames = crewNames.sort(() => Math.random() - 0.5);
         for (let i = 0; i < gameState.familySize; i++) {
             gameState.crew.push({
                 name: shuffledNames[i],
-                conditions: [], // sick, injured, disabled, starving, distraught
-                mood: 'content' // happy, content, accepting, disgruntled, unhappy
+                conditions: [],
+                mood: 'content'
             });
         }
         console.log(`Crew initialized: ${gameState.familySize} members`, gameState.crew);
@@ -50,6 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
             randomizeCrew();
         }
     }
+    loadGame();
 
     // Events
     const events = [
@@ -174,6 +189,7 @@ document.addEventListener('DOMContentLoaded', () => {
             choices: [
                 { text: "Patch", action: () => {
                     gameState.credits -= 15;
+                    gameState.parts -= 15; // Use parts for repair
                     return "Leak fixed, fuel saved.";
                 }},
                 { text: "Conserve", action: () => {
@@ -199,6 +215,7 @@ document.addEventListener('DOMContentLoaded', () => {
             choices: [
                 { text: "Seal Area", action: () => {
                     gameState.credits -= 15;
+                    gameState.parts -= 10; // Use parts for sealing
                     return "Leak contained.";
                 }},
                 { text: "Evacuate", action: () => {
@@ -225,6 +242,7 @@ document.addEventListener('DOMContentLoaded', () => {
             choices: [
                 { text: "Replace", action: () => {
                     gameState.credits -= 20;
+                    gameState.parts -= 15; // Use parts for filter
                     return "Breathing restored.";
                 }},
                 { text: "Ration", action: () => {
@@ -241,6 +259,7 @@ document.addEventListener('DOMContentLoaded', () => {
             choices: [
                 { text: "Repair", action: () => {
                     gameState.credits -= 15;
+                    gameState.parts -= 10; // Use parts for repair
                     return "Power restored.";
                 }},
                 { text: "Divert Fuel", action: () => {
@@ -290,6 +309,7 @@ document.addEventListener('DOMContentLoaded', () => {
             choices: [
                 { text: "Patch Now", action: () => {
                     gameState.credits -= 20;
+                    gameState.parts -= 15; // Use parts for patching
                     return "Hull secured.";
                 }},
                 { text: "Patch Later", action: () => {
@@ -302,6 +322,7 @@ document.addEventListener('DOMContentLoaded', () => {
             choices: [
                 { text: "Fix", action: () => {
                     gameState.credits -= 15;
+                    gameState.parts -= 10; // Use parts for repair
                     return "Water supply restored.";
                 }},
                 { text: "Ration", action: () => {
@@ -335,20 +356,121 @@ document.addEventListener('DOMContentLoaded', () => {
                     return "Power stabilized.";
                 }}
             ]
+        },
+        {
+            text: "A wandering trader offers to buy your resources for credits. Choose to sell or decline.",
+            choices: [
+                { text: "Sell Food", action: () => {
+                    gameState.food -= 20;
+                    gameState.credits += 15;
+                    return "Sold 20 food for 15 credits.";
+                }},
+                { text: "Decline", action: () => "You pass on the deal." }
+            ]
+        },
+        {
+            text: "A wandering trader offers to buy your resources for credits. Choose to sell or decline.",
+            choices: [
+                { text: "Sell Fuel", action: () => {
+                    gameState.fuel -= 15;
+                    gameState.credits += 20;
+                    return "Sold 15 fuel for 20 credits.";
+                }},
+                { text: "Decline", action: () => "You pass on the deal." }
+            ]
+        },
+        {
+            text: "A wandering trader offers to buy your resources for credits. Choose to sell or decline.",
+            choices: [
+                { text: "Sell Parts", action: () => {
+                    gameState.parts -= 15;
+                    gameState.credits += 18;
+                    return "Sold 15 parts for 18 credits.";
+                }},
+                { text: "Decline", action: () => "You pass on the deal." }
+            ]
+        },
+        {
+            text: "A wandering trader offers to buy your resources for credits. Choose to sell or decline.",
+            choices: [
+                { text: "Sell Supplies", action: () => {
+                    gameState.credits += 36;
+                    gameState.food -= 10;
+                    gameState.fuel -= 10;
+                    gameState.parts -= 10;
+                    return "Bought 10 food, fuel, parts for 30 credits.";
+                }},
+                { text: "Decline", action: () => "You pass on the deal." }
+            ]
+        },
+        {
+            text: "A wandering trader offers to sell you resources for credits. Choose to Buy or decline.",
+            choices: [
+                { text: "Buy Food", action: () => {
+                    gameState.food += 20;
+                    gameState.credits -= 15;
+                    return "Sold 20 food for 15 credits.";
+                }},
+                { text: "Decline", action: () => "You pass on the deal." }
+            ]
+        },
+        {
+            text: "A wandering trader offers to sell you resources for credits. Choose to Buy or decline..",
+            choices: [
+                { text: "Buy Fuel", action: () => {
+                    gameState.fuel += 15;
+                    gameState.credits -= 20;
+                    return "Sold 15 fuel for 20 credits.";
+                }},
+                { text: "Decline", action: () => "You pass on the deal." }
+            ]
+        },
+        {
+            text: "A wandering trader offers to sell you resources for credits. Choose to Buy or decline..",
+            choices: [
+                { text: "Buy Parts", action: () => {
+                    gameState.parts += 15;
+                    gameState.credits -= 18;
+                    return "Sold 15 parts for 18 credits.";
+                }},
+                { text: "Decline", action: () => "You pass on the deal." }
+            ]
+        },
+        {
+            text: "A wandering trader offers to sell you Astrocartography Data for credits. Choose to Buy or decline.",
+            choices: [
+                { text: "Buy Data", action: () => {
+                    gameState.credits += 25;
+                     return Math.random() < 0.45 ? (gameState.distance -= 10, "Data was useful! -10 distance.") : "No usable data."
+                }},
+                { text: "Decline", action: () => "You pass on the deal." }
+            ]
+        },
+        {
+            text: "A wandering trader offers to sell you resources for credits. Choose to Buy or decline.",
+            choices: [
+                { text: "Buy Supplies", action: () => {
+                    gameState.credits -= 30;
+                    gameState.food += 10;
+                    gameState.fuel += 10;
+                    gameState.parts += 10;
+                    return "Bought 10 food, fuel, parts for 30 credits.";
+                }},
+                { text: "Decline", action: () => "You pass on the deal." }
+            ]
         }
     ];
 
-    // DOM elements
-const eventText = document.getElementById('event-text');
-const choicesDiv = document.getElementById('choices');
-const statusList = document.getElementById('status-list');
-const crewList = document.getElementById('crew-list');
-
     function updateStatus() {
+        if (!statusList) {
+            console.error('Cannot update status: statusList is null');
+            return;
+        }
         statusList.innerHTML = `
             <div class="status-item">Distance: ${gameState.distance} M km</div>
             <div class="status-item">Fuel: ${gameState.fuel.toFixed(1)} tons</div>
             <div class="status-item">Food: ${gameState.food.toFixed(1)} kg</div>
+            <div class="status-item">Parts: ${gameState.parts.toFixed(1)} units</div>
             <div class="status-item">Credits: ${gameState.credits}</div>
             <div class="status-item">Family: ${gameState.familySize}</div>
         `;
@@ -356,6 +478,10 @@ const crewList = document.getElementById('crew-list');
     }
 
     function updateCrew() {
+        if (!crewList) {
+            console.error('Cannot update crew: crewList is null');
+            return;
+        }
         crewList.innerHTML = '';
         gameState.crew.forEach(member => {
             const memberDiv = document.createElement('div');
@@ -376,21 +502,19 @@ const crewList = document.getElementById('crew-list');
 
     function updateConditionsAndMood() {
         gameState.crew.forEach(member => {
-            // Starving condition
             if (gameState.food <= 0 && !member.conditions.includes('starving')) {
                 member.conditions.push('starving');
                 member.mood = 'unhappy';
             } else if (gameState.food > 0 && member.conditions.includes('starving')) {
                 member.conditions = member.conditions.filter(c => c !== 'starving');
             }
-            // Mood adjustments
-            if (gameState.food < 100 || member.conditions.length > 0) {
+            if (gameState.food < 100 || gameState.parts < 100 || member.conditions.length > 0) {
                 if (member.mood === 'happy' || member.mood === 'content') {
                     member.mood = 'accepting';
                 } else if (member.mood === 'accepting') {
                     member.mood = 'disgruntled';
                 }
-            } else if (gameState.food > 300 && member.conditions.length === 0) {
+            } else if (gameState.food > 300 && gameState.parts > 300 && member.conditions.length === 0) {
                 if (member.mood === 'disgruntled' || member.mood === 'unhappy') {
                     member.mood = 'accepting';
                 } else if (member.mood === 'accepting') {
@@ -404,6 +528,10 @@ const crewList = document.getElementById('crew-list');
     }
 
     function triggerEvent() {
+        if (!eventText || !choicesDiv) {
+            console.error('Cannot trigger event: eventText or choicesDiv is null');
+            return;
+        }
         if (gameState.gameOver) {
             eventText.textContent = gameState.distance <= 0 ? "You reached Mars! You win!" : "Game Over: You ran out of resources.";
             const restartButton = document.createElement('button');
@@ -415,6 +543,7 @@ const crewList = document.getElementById('crew-list');
                     fuel: 960,
                     food: gameState.familySize * 150,
                     credits: 100,
+                    parts: 500, // Reset parts
                     gameOver: false,
                     familySize: gameState.familySize,
                     crew: gameState.crew.map(member => ({
@@ -447,14 +576,15 @@ const crewList = document.getElementById('crew-list');
                 eventText.textContent = result;
                 gameState.distance -= 10;
                 gameState.fuel -= 4;
+                gameState.parts -= 3; // Decrement parts
                 let foodDecrement = gameState.familySize * 0.67;
                 gameState.crew.forEach(member => {
-                    if (member.conditions.length > 0) foodDecrement += 0.1; // Extra food for conditions
-                    if (['disgruntled', 'unhappy'].includes(member.mood)) gameState.credits -= 1; // Inefficiency
+                    if (member.conditions.length > 0) foodDecrement += 0.1;
+                    if (['disgruntled', 'unhappy'].includes(member.mood)) gameState.credits -= 1;
                 });
                 gameState.food -= foodDecrement;
 
-                if (gameState.fuel <= 0 || gameState.food <= 0) {
+                if (gameState.fuel <= 0 || gameState.food <= 0 || gameState.parts <= 0) {
                     gameState.gameOver = true;
                 } else if (gameState.distance <= 0) {
                     gameState.gameOver = true;
@@ -477,7 +607,6 @@ const crewList = document.getElementById('crew-list');
     }
 
     // Start game
-    loadGame();
     updateStatus();
     updateCrew();
     triggerEvent();
