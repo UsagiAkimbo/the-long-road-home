@@ -11,17 +11,20 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!statusList) console.error('Element #status-list not found');
     if (!crewList) console.error('Element #crew-list not found');
 
-    // Game state
-    let gameState = {
+    // Default game state
+    const defaultGameState = {
         distance: 2250,
         fuel: 960,
         food: 600,
         credits: 100,
-        parts: 500, // New resource
+        parts: 500,
         gameOver: false,
         familySize: 4,
         crew: []
     };
+
+    // Game state
+    let gameState = { ...defaultGameState };
 
     // xAI-generated crew names
     const crewNames = [
