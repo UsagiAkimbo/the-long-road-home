@@ -678,13 +678,21 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Cannot update status: statusList is null');
             return;
         }
+        // Debug undefined resources
+        if (gameState.distance === undefined) console.error('Distance is undefined');
+        if (gameState.fuel === undefined) console.error('Fuel is undefined');
+        if (gameState.food === undefined) console.error('Food is undefined');
+        if (gameState.parts === undefined) console.error('Parts is undefined');
+        if (gameState.credits === undefined) console.error('Credits is undefined');
+        if (gameState.familySize === undefined) console.error('FamilySize is undefined');
+
         statusList.innerHTML = `
-            <div class="status-item">Distance: ${gameState.distance} M km</div>
-            <div class="status-item">Fuel: ${gameState.fuel.toFixed(1)} tons</div>
-            <div class="status-item">Food: ${gameState.food.toFixed(1)} kg</div>
-            <div class="status-item">Parts: ${gameState.parts.toFixed(1)} units</div>
-            <div class="status-item">Credits: ${gameState.credits}</div>
-            <div class="status-item">Family: ${gameState.familySize}</div>
+            <div class="status-item">Distance: ${gameState.distance || 2250} M km</div>
+            <div class="status-item">Fuel: ${(gameState.fuel || 960).toFixed(1)} tons</div>
+            <div class="status-item">Food: ${(gameState.food || 600).toFixed(1)} kg</div>
+            <div class="status-item">Parts: ${(gameState.parts || 500).toFixed(1)} units</div>
+            <div class="status-item">Credits: ${gameState.credits || 100}</div>
+            <div class="status-item">Family: ${gameState.familySize || 4}</div>
         `;
         console.log('Status updated:', gameState);
     }
