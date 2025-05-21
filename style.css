@@ -1,0 +1,513 @@
+﻿@font-face {
+    font-family: 'VT323';
+    src: url('assets/VT323-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    margin: 0;
+    background: #111;
+    overflow: hidden;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#game {
+    width: 100vw;
+    height: 100vh;
+    background: #000000;
+    position: relative;
+    font-family: 'VT323', monospace;
+    color: #000;
+    overflow-y: auto; /* Allow scrolling on small screens */
+}
+
+/* Base layout (≥1920px, e.g., 1920x1080, 2560x1440) */
+#image-box {
+    width: min(80%, 800px);
+    height: min(40%, 400px);
+    background: url('assets/space-00.jpg') no-repeat center/cover;
+    border: 4px solid #55FF55;
+    border-radius: 20px;
+    position: absolute;
+    top: 20vh; /* ~200px below title on 1080px height */
+    left: 50%;
+    transform: translateX(-50%);
+    box-shadow: 0 0 10px #55FF55;
+}
+
+#ship {
+    width: min(10%, 100px);
+    height: min(10%, 100px);
+    background: url('assets/starship.png') no-repeat center/contain;
+    background-color: transparent;
+    position: absolute;
+    left: 83.3125%; /* 666.5px / 800px */
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#hud {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+}
+
+#title {
+    font-size: 3rem; /* 48px */
+    color: #55FF55;
+    margin: 1rem 0;
+    text-shadow: 0 0 5px #55FF55;
+}
+
+#event-area {
+    width: min(80%, 600px);
+    position: absolute;
+    top: 70vh; /* ~150px below image box on 1080px height */
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+}
+
+#event-background {
+    width: 100%;
+    height: min(25%, 200px);
+    background: rgba(0, 0, 0, 0.7);
+    position: absolute;
+    top: -12.5%; /* -100px / 800px */
+    left: 0;
+    box-shadow: 0 0 10px #55FF55;
+}
+
+#event-text {
+    font-size: 2rem; /* 32px */
+    color: #55FF55;
+    margin: 0;
+    position: relative;
+    top: -25px;
+    max-height: 100px;
+    overflow-wrap: break-word;
+    padding: 15px;
+    text-shadow: 0 0 5px #55FF55;
+}
+
+#choices {
+    position: relative;
+    top: -20px;
+}
+
+.choice-button {
+    font-family: 'VT323', monospace;
+    font-size: 1.5rem; /* 24px */
+    background: rgba(0, 0, 0, 0.7);
+    color: #55FF55;
+    border: 2px solid #55FF55;
+    padding: 10px 20px;
+    margin: 10px;
+    cursor: pointer;
+    display: block;
+    width: min(80%, 200px);
+    text-align: center;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    text-shadow: 0 0 5px #55FF55;
+}
+
+    .choice-button:hover {
+        background: rgba(85, 255, 85, 0.7);
+        color: #000;
+        text-shadow: 0 0 5px #55FF55, 0 0 3px #55FF55;
+    }
+
+#status-area, #crew-area {
+    width: 200px;
+    height: 100%;
+    position: absolute;
+    top: 0;
+}
+
+#status-area {
+    left: 0;
+}
+
+#crew-area {
+    right: 0;
+}
+
+#status-background, #crew-background {
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    box-shadow: 0 0 10px #55FF55;
+}
+
+#status-title, #crew-title {
+    font-size: 2rem; /* 32px */
+    color: #55FF55;
+    margin: 20px 0;
+    text-align: center;
+    position: relative;
+    text-shadow: 0 0 5px #55FF55;
+}
+
+#status-list, #crew-list {
+    font-size: 1.5rem; /* 24px */
+    color: #55FF55;
+    padding: 10px;
+    max-height: calc(100% - 60px);
+    overflow-y: auto;
+    position: relative;
+    text-shadow: 0 0 5px #55FF55;
+}
+
+.status-item {
+    margin: 3px 0;
+}
+
+.crew-member {
+    margin: 5px 0;
+    display: flex;
+    align-items: center;
+}
+
+    .crew-member span {
+        margin-right: 10px;
+    }
+
+.condition-icon, .mood-icon {
+    width: 24px;
+    height: 24px;
+    margin-left: 5px;
+    box-shadow: 0 0 5px #55FF55;
+}
+
+/* Media Queries */
+
+/* <1920px (e.g., 1440x900) */
+@media screen and (max-width: 1920px) {
+    #image-box {
+        width: min(80%, 720px);
+        height: min(40%, 360px);
+    }
+
+    #ship {
+        width: min(10%, 90px);
+        height: min(10%, 90px);
+    }
+
+    #title {
+        font-size: 2.75rem; /* 44px */
+    }
+
+    #event-area {
+        width: min(80%, 540px);
+    }
+
+    #event-text {
+        font-size: 1.75rem; /* 28px */
+    }
+
+    .choice-button {
+        font-size: 1.375rem; /* 22px */
+        width: min(80%, 180px);
+    }
+
+    #status-area, #crew-area {
+        width: 180px;
+    }
+
+    #status-title, #crew-title {
+        font-size: 1.75rem; /* 28px */
+    }
+
+    #status-list, #crew-list {
+        font-size: 1.375rem; /* 22px */
+    }
+
+    .condition-icon, .mood-icon {
+        width: 22px;
+        height: 22px;
+        box-shadow: 0 0 4px #55FF55;
+    }
+}
+
+/* <1440px (e.g., 1366x768) */
+@media screen and (max-width: 1440px) {
+    #image-box {
+        width: min(80%, 640px);
+        height: min(40%, 320px);
+    }
+
+    #ship {
+        width: min(10%, 80px);
+        height: min(10%, 80px);
+    }
+
+    #title {
+        font-size: 2.5rem; /* 40px */
+    }
+
+    #event-area {
+        width: min(80%, 480px);
+    }
+
+    #event-text {
+        font-size: 1.5rem; /* 24px */
+    }
+
+    .choice-button {
+        font-size: 1.25rem; /* 20px */
+        width: min(80%, 160px);
+    }
+
+    #status-area, #crew-area {
+        width: 160px;
+    }
+
+    #status-title, #crew-title {
+        font-size: 1.5rem; /* 24px */
+    }
+
+    #status-list, #crew-list {
+        font-size: 1.25rem; /* 20px */
+    }
+
+    .condition-icon, .mood-icon {
+        width: 20px;
+        height: 20px;
+        box-shadow: 0 0 4px #55FF55;
+    }
+}
+
+/* <1024px (tablet-like) */
+@media screen and (max-width: 1024px) {
+    #image-box {
+        width: min(80%, 560px);
+        height: min(40%, 280px);
+    }
+
+    #ship {
+        width: min(10%, 70px);
+        height: min(10%, 70px);
+    }
+
+    #title {
+        font-size: 2.25rem; /* 36px */
+    }
+
+    #event-area {
+        width: min(80%, 420px);
+    }
+
+    #event-text {
+        font-size: 1.375rem; /* 22px */
+    }
+
+    .choice-button {
+        font-size: 1.125rem; /* 18px */
+        width: min(80%, 140px);
+    }
+
+    #status-area, #crew-area {
+        width: 140px;
+    }
+
+    #status-title, #crew-title {
+        font-size: 1.375rem; /* 22px */
+    }
+
+    #status-list, #crew-list {
+        font-size: 1.125rem; /* 18px */
+    }
+
+    .condition-icon, .mood-icon {
+        width: 18px;
+        height: 18px;
+        box-shadow: 0 0 3px #55FF55;
+    }
+}
+
+/* <768px (e.g., 414x896) */
+@media screen and (max-width: 768px) {
+    #game {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #image-box {
+        width: 90%;
+        height: 30vh;
+        top: 15vh;
+    }
+
+    #ship {
+        width: 15%;
+        height: 15%;
+    }
+
+    #title {
+        font-size: 2rem; /* 32px */
+    }
+
+    #event-area {
+        width: 90%;
+        top: 50vh; /* Closer to image box */
+    }
+
+    #event-background {
+        height: 25vh;
+    }
+
+    #event-text {
+        font-size: 1.25rem; /* 20px */
+        max-height: 80px;
+        padding: 10px;
+    }
+
+    .choice-button {
+        font-size: 1rem; /* 16px */
+        width: 80%;
+        padding: 8px 16px;
+    }
+
+    #status-area, #crew-area {
+        width: 100%;
+        height: auto;
+        position: relative;
+        top: auto;
+        left: auto;
+        right: auto;
+        margin: 10px 0;
+    }
+
+    #status-background, #crew-background {
+        height: auto;
+        min-height: 150px;
+    }
+
+    #status-title, #crew-title {
+        font-size: 1.25rem; /* 20px */
+    }
+
+    #status-list, #crew-list {
+        font-size: 1rem; /* 16px */
+        max-height: 200px;
+    }
+
+    .condition-icon, .mood-icon {
+        width: 16px;
+        height: 16px;
+        box-shadow: 0 0 3px #55FF55;
+    }
+}
+
+/* <414px (e.g., 375x667) */
+@media screen and (max-width: 414px) {
+    #image-box {
+        width: 95%;
+        height: 25vh;
+        top: 12vh;
+    }
+
+    #ship {
+        width: 12%;
+        height: 12%;
+    }
+
+    #title {
+        font-size: 1.75rem; /* 28px */
+    }
+
+    #event-area {
+        width: 95%;
+        top: 45vh;
+    }
+
+    #event-text {
+        font-size: 1.125rem; /* 18px */
+    }
+
+    .choice-button {
+        font-size: 0.875rem; /* 14px */
+        width: 85%;
+        padding: 6px 12px;
+    }
+
+    #status-title, #crew-title {
+        font-size: 1.125rem; /* 18px */
+    }
+
+    #status-list, #crew-list {
+        font-size: 0.875rem; /* 14px */
+    }
+
+    .condition-icon, .mood-icon {
+        width: 14px;
+        height: 14px;
+        box-shadow: 0 0 2px #55FF55;
+    }
+}
+
+/* <375px (e.g., 360x640) */
+@media screen and (max-width: 375px) {
+    #image-box {
+        width: 98%;
+        height: 20vh;
+        top: 10vh;
+    }
+
+    #ship {
+        width: 10%;
+        height: 10%;
+    }
+
+    #title {
+        font-size: 1.5rem; /* 24px */
+    }
+
+    #event-area {
+        width: 98%;
+        top: 40vh;
+    }
+
+    #event-background {
+        height: 20vh;
+    }
+
+    #event-text {
+        font-size: 1rem; /* 16px */
+        max-height: 60px;
+        padding: 8px;
+    }
+
+    .choice-button {
+        font-size: 0.75rem; /* 12px */
+        width: 90%;
+        padding: 5px 10px;
+    }
+
+    #status-title, #crew-title {
+        font-size: 1rem; /* 16px */
+    }
+
+    #status-list, #crew-list {
+        font-size: 0.75rem; /* 12px */
+        max-height: 150px;
+    }
+
+    .condition-icon, .mood-icon {
+        width: 12px;
+        height: 12px;
+        box-shadow: 0 0 2px #55FF55;
+    }
+}
