@@ -393,6 +393,7 @@ body {
         height: auto;
         min-height: 150px;
         top: 0;
+        border: 2px solid #55FF55;
         box-sizing: border-box;
         padding: 5px;
         position: relative;
@@ -405,6 +406,7 @@ body {
         height: auto;
         min-height: 150px;
         top: 0;
+        border: 2px solid #55FF55;
         box-sizing: border-box;
         padding: 5px;
         position: relative;
@@ -473,7 +475,7 @@ body {
         padding: 8px 10px;
         margin: 5px auto;
         min-height: 30px;
-        border: 2px solid #FF0000;
+        border: 2px solid #55FF55;
         background: rgba(85, 255, 85, 0.2);
     }
 
@@ -492,7 +494,7 @@ body {
 
     #status-list, #crew-list {
         font-size: clamp(0.75rem, 3vw, 0.875rem); /* 12px–14px */
-        max-height: 100px;
+        max-height: 50%;
         padding: 5px;
     }
 
