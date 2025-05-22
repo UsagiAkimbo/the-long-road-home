@@ -376,7 +376,7 @@ body {
     .grid-container {
         display: grid;
         grid-template-columns: 50% 50%; /* Two equal columns */
-        grid-template-rows: auto auto; /* Two rows for top and bottom areas */
+        grid-template-rows: 50% 50%; /* Two rows for top and bottom areas */
         width: 100%;
         height: auto;
         min-height: calc(100vh - 60px); /* Adjust for title height */
