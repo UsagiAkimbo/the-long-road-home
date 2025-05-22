@@ -392,6 +392,7 @@ body {
         width: 100%;
         height: auto;
         min-height: 150px;
+        top: 0;
         box-sizing: border-box;
         padding: 5px;
         position: relative;
@@ -403,6 +404,7 @@ body {
         width: 100%;
         height: auto;
         min-height: 150px;
+        top: 0;
         box-sizing: border-box;
         padding: 5px;
         position: relative;
@@ -446,7 +448,6 @@ body {
     #event-background {
         height: 100%;
         min-height: 150px;
-        background: rgba(255, 255, 0, 0.2);
         box-shadow: 0 0 5px #55FF55;
         top: 0;
         position: relative;
@@ -473,13 +474,12 @@ body {
         margin: 5px auto;
         min-height: 30px;
         border: 2px solid #FF0000;
-        background: rgba(255, 0, 0, 0.2);
+        background: rgba(85, 255, 85, 0.2);
     }
 
     #status-background, #crew-background {
         height: 100%;
         min-height: 150px;
-        background: rgba(85, 255, 85, 0.2);
         box-shadow: 0 0 5px #55FF55;
         position: relative;
         width: 100%;
