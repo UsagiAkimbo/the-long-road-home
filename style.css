@@ -425,7 +425,7 @@ body {
 
     #event-area {
         grid-column: 2 / 3;
-        grid-row: 2 / 2;
+        grid-row: 2 / 3;
         width: 100%;
         height: auto;
         min-height: 150px;
