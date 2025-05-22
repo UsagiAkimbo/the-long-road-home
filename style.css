@@ -394,6 +394,7 @@ body {
         min-height: 150px;
         top: 0;
         border: 2px solid #55FF55;
+        box-shadow: 0 0 5px #55FF55;
         box-sizing: border-box;
         padding: 5px;
         position: relative;
@@ -407,6 +408,7 @@ body {
         min-height: 150px;
         top: 0;
         border: 2px solid #55FF55;
+        box-shadow: 0 0 5px #55FF55;
         box-sizing: border-box;
         padding: 5px;
         position: relative;
@@ -450,7 +452,6 @@ body {
     #event-background {
         height: 100%;
         min-height: 150px;
-        box-shadow: 0 0 5px #55FF55;
         top: 0;
         position: relative;
         width: 100%;
@@ -482,7 +483,6 @@ body {
     #status-background, #crew-background {
         height: 100%;
         min-height: 150px;
-        box-shadow: 0 0 5px #55FF55;
         position: relative;
         width: 100%;
     }
