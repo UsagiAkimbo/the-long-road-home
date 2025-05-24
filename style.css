@@ -470,7 +470,6 @@ body {
     #event-background {
         height: 100%;
         min-height: 350px;
-        background: rgba(255, 255, 0, 0.2);
         box-shadow: 0 0 5px #55FF55;
         top: 0;
         position: relative;
@@ -480,7 +479,6 @@ body {
     #cargo-background {
         height: 100%;
         min-height: 200px;
-        background: rgba(85, 255, 85, 0.2);
         box-shadow: 0 0 5px #55FF55;
         position: relative;
         width: 100%;
