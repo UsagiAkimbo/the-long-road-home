@@ -1,0 +1,566 @@
+﻿@font-face {
+    font-family: 'VT323';
+    src: url('assets/VT323-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    margin: 0;
+    background: #111;
+    overflow: hidden;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#game {
+    width: 100vw;
+    height: 100vh;
+    background: #000000;
+    position: relative;
+    font-family: 'VT323', monospace;
+    color: #000;
+    overflow-y: auto;
+}
+
+/* Base layout (≥1920px, e.g., 1920x1080, 2560x1440) */
+#image-box {
+    width: min(80%, 800px);
+    height: min(40%, 400px);
+    background: url('assets/space-00.jpg') no-repeat center/cover;
+    border: 4px solid #55FF55;
+    border-radius: 20px;
+    position: absolute;
+    top: 20vh;
+    left: 50%;
+    transform: translateX(-50%);
+    box-shadow: 0 0 10px #55FF55;
+}
+
+#ship {
+    width: min(10%, 100px);
+    height: min(10%, 100px);
+    background: url('assets/starship.png') no-repeat center/contain;
+    background-color: transparent;
+    position: absolute;
+    left: 83.3125%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#hud {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+}
+
+#title {
+    font-size: 3rem;
+    color: #55FF55;
+    margin: 1rem 0;
+    text-shadow: 0 0 5px #55FF55;
+}
+
+#event-area {
+    width: min(80%, 600px);
+    position: absolute;
+    top: 70vh;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+}
+
+#event-background {
+    width: 100%;
+    height: min(25%, 200px);
+    background: rgba(0, 0, 0, 0.7);
+    position: absolute;
+    top: -12.5%;
+    left: 0;
+    box-shadow: 0 0 10px #55FF55;
+}
+
+#event-text {
+    font-size: 2rem;
+    color: #55FF55;
+    margin: 0;
+    position: relative;
+    top: -25px;
+    max-height: 100px;
+    overflow-wrap: break-word;
+    padding: 15px;
+    text-shadow: 0 0 5px #55FF55;
+}
+
+#choices {
+    position: relative;
+    top: -20px;
+}
+
+.choice-button {
+    font-family: 'VT323', monospace;
+    font-size: 1.5rem;
+    background: rgba(0, 0, 0, 0.7);
+    color: #55FF55;
+    border: 2px solid #55FF55;
+    padding: 10px 20px;
+    margin: 10px;
+    cursor: pointer;
+    display: block;
+    width: min(80%, 200px);
+    text-align: center;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    text-shadow: 0 0 5px #55FF55;
+    min-height: 40px;
+    touch-action: manipulation;
+}
+
+    .choice-button:hover {
+        background: rgba(85, 255, 85, 0.7);
+        color: #000;
+        text-shadow: 0 0 5px #55FF55, 0 0 3px #55FF55;
+    }
+
+#status-area, #crew-area {
+    width: 200px;
+    height: 100%;
+    position: absolute;
+    top: 0;
+}
+
+#status-area {
+    left: 0;
+}
+
+#crew-area {
+    right: 0;
+}
+
+#status-background, #crew-background {
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    position: absolute;
+    top: 0;
+}
+
+#status-title, #crew-title {
+    font-size: 2rem;
+    color: #55FF55;
+    margin: 20px 0;
+    text-align: center;
+    position: relative;
+    text-shadow: 0 0 5px #55FF55;
+}
+
+#status-list, #crew-list {
+    font-size: 1.5rem;
+    color: #55FF55;
+    padding: 10px;
+    max-height: calc(100% - 60px);
+    overflow-y: auto;
+    position: relative;
+    text-shadow: 0 0 5px #55FF55;
+}
+
+.status-item {
+    margin: 3px 0;
+}
+
+.crew-member {
+    margin: 5px 0;
+    display: flex;
+    align-items: center;
+}
+
+    .crew-member span {
+        margin-right: 10px;
+    }
+
+.condition-icon, .mood-icon {
+    width: 24px;
+    height: 24px;
+    margin-left: 5px;
+    box-shadow: 0 0 5px #55FF55;
+}
+
+.cargo-icon {
+    width: 24px;
+    height: 24px;
+    box-shadow: 0 0 5px #55FF55;
+}
+
+/* Media Queries */
+
+/* <1920px (e.g., 1440x900) */
+@media screen and (max-width: 1920px) {
+    #image-box {
+        width: min(80%, 720px);
+        height: min(40%, 360px);
+    }
+
+    #ship {
+        width: min(10%, 90px);
+        height: min(10%, 90px);
+    }
+
+    #title {
+        font-size: 2.75rem;
+    }
+
+    #event-area {
+        width: min(80%, 540px);
+    }
+
+    #event-text {
+        font-size: 1.75rem;
+    }
+
+    .choice-button {
+        font-size: 1.375rem;
+        width: min(80%, 180px);
+    }
+
+    #status-area, #crew-area {
+        width: 180px;
+    }
+
+    #status-title, #crew-title {
+        font-size: 1.75rem;
+    }
+
+    #status-list, #crew-list {
+        font-size: 1.375rem;
+    }
+
+    .condition-icon, .mood-icon {
+        width: 22px;
+        height: 22px;
+        box-shadow: 0 0 4px #55FF55;
+    }
+}
+
+/* <1440px (e.g., 1366x768) */
+@media screen and (max-width: 1440px) {
+    #image-box {
+        width: min(80%, 640px);
+        height: min(40%, 320px);
+    }
+
+    #ship {
+        width: min(10%, 80px);
+        height: min(10%, 80px);
+    }
+
+    #title {
+        font-size: 2.5rem;
+    }
+
+    #event-area {
+        width: min(80%, 480px);
+    }
+
+    #event-text {
+        font-size: 1.5rem;
+    }
+
+    .choice-button {
+        font-size: 1.25rem;
+        width: min(80%, 160px);
+    }
+
+    #status-area, #crew-area {
+        width: 160px;
+    }
+
+    #status-title, #crew-title {
+        font-size: 1.5rem;
+    }
+
+    #status-list, #crew-list {
+        font-size: 1.25rem;
+    }
+
+    .condition-icon, .mood-icon {
+        width: 20px;
+        height: 20px;
+        box-shadow: 0 0 4px #55FF55;
+    }
+}
+
+/* <1024px (tablet-like) */
+@media screen and (max-width: 1024px) {
+    #image-box {
+        width: min(80%, 560px);
+        height: min(40%, 280px);
+    }
+
+    #ship {
+        width: min(10%, 70px);
+        height: min(10%, 70px);
+    }
+
+    #title {
+        font-size: 2.25rem;
+    }
+
+    #event-area {
+        width: min(80%, 420px);
+    }
+
+    #event-text {
+        font-size: 1.375rem;
+    }
+
+    .choice-button {
+        font-size: 1.125rem;
+        width: min(80%, 140px);
+    }
+
+    #status-area, #crew-area {
+        width: 140px;
+    }
+
+    #status-title, #crew-title {
+        font-size: 1.375rem;
+    }
+
+    #status-list, #crew-list {
+        font-size: 1.125rem;
+    }
+
+    .condition-icon, .mood-icon {
+        width: 18px;
+        height: 18px;
+        box-shadow: 0 0 3px #55FF55;
+    }
+}
+
+/* ≤1080px (smartphones and smaller tablets) */
+@media screen and (max-width: 1080px) {
+    body {
+        display: block; /* Override flex to allow full-width layout */
+        height: auto;
+        min-height: 100vh;
+    }
+
+    #game {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
+        height: auto;
+        min-height: 100vh;
+        padding: 0;
+        margin: 0;
+        overflow-y: auto;
+        box-sizing: border-box;
+    }
+
+    #hud {
+        position: relative;
+        width: 100%;
+        text-align: center;
+        padding: 10px 0;
+    }
+
+    #title {
+        font-size: clamp(1.25rem, 4vw, 1.5rem); /* 20px–24px */
+        margin: 10px 0;
+        position: relative;
+    }
+
+    /* Grid container for areas */
+    .grid-container {
+        display: grid;
+        grid-template-columns: 50% 50%; /* Two equal columns */
+        grid-template-rows: auto auto auto; /* Three rows: crew, status, cargo (left); image, event (right) */
+        width: 100%;
+        height: auto;
+        min-height: calc(100vh - 60px); /* Adjust for title height */
+        gap: 5px;
+        box-sizing: border-box;
+        margin: 0;
+        padding: 5px;
+    }
+
+    #crew-area {
+        grid-column: 1 / 2;
+        grid-row: 1 / 2;
+        width: 100%;
+        height: auto;
+        min-height: 150px;
+        top: 0;
+        border: 2px solid #55FF55;
+        box-shadow: 0 0 5px #55FF55;
+        box-sizing: border-box;
+        padding: 5px;
+        position: relative;
+    }
+
+    #status-area {
+        grid-column: 1 / 2;
+        grid-row: 2 / 3;
+        width: 100%;
+        height: auto;
+        min-height: 150px;
+        top: 0;
+        border: 2px solid #55FF55;
+        box-shadow: 0 0 5px #55FF55;
+        box-sizing: border-box;
+        padding: 5px;
+        position: relative;
+    }
+
+    #cargo-area {
+        grid-column: 1 / 2;
+        grid-row: 3 / 4;
+        width: 100%;
+        height: auto;
+        min-height: 200px; /* Adjusted for 6 rows of icons */
+        top: 0;
+        border: 2px solid #55FF55;
+        box-shadow: 0 0 5px #55FF55;
+        box-sizing: border-box;
+        padding: 5px;
+        position: relative;
+    }
+
+    #image-box {
+        grid-column: 2 / 3;
+        grid-row: 1 / 2;
+        width: 100%;
+        height: auto;
+        min-height: 150px;
+        top: 0;
+        border: 2px solid #55FF55;
+        box-shadow: 0 0 5px #55FF55;
+        background: url('assets/space-00.jpg') no-repeat center/cover, rgba(85, 255, 85, 0.1);
+        box-sizing: border-box;
+        padding: 5px;
+        position: relative;
+    }
+
+    #event-area {
+        grid-column: 2 / 3;
+        grid-row: 2 / 4; /* Span two rows to balance layout */
+        width: 100%;
+        height: auto;
+        min-height: 350px; /* Adjusted to match total height of status + cargo */
+        top: 0;
+        box-sizing: border-box;
+        padding: 5px;
+        position: relative;
+    }
+
+    #ship {
+        width: 20%;
+        height: 20%;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    #event-background {
+        height: 100%;
+        min-height: 350px;
+        background: rgba(255, 255, 0, 0.2);
+        box-shadow: 0 0 5px #55FF55;
+        top: 0;
+        position: relative;
+        width: 100%;
+    }
+
+    #cargo-background {
+        height: 100%;
+        min-height: 200px;
+        background: rgba(85, 255, 85, 0.2);
+        box-shadow: 0 0 5px #55FF55;
+        position: relative;
+        width: 100%;
+    }
+
+    #cargo-title {
+        font-size: clamp(0.875rem, 3.5vw, 1rem); /* 14px–16px */
+        color: #55FF55;
+        margin: 10px 0;
+        text-align: center;
+        position: relative;
+        text-shadow: 0 0 5px #55FF55;
+    }
+
+    #cargo-list {
+        display: grid;
+        grid-template-columns: repeat(8, 24px); /* 8 boxes per row */
+        grid-template-rows: repeat(6, 24px); /* 6 rows */
+        gap: 2px; /* Small gap between boxes */
+        justify-content: start;
+        align-content: start;
+        padding: 5px;
+        width: 100%;
+        height: auto;
+        box-sizing: border-box;
+    }
+
+    #event-text {
+        font-size: clamp(0.875rem, 3.5vw, 1rem); /* 14px–16px */
+        max-height: 80px;
+        padding: 10px;
+        top: 0;
+        position: relative;
+    }
+
+    #choices {
+        top: 0;
+        position: relative;
+    }
+
+    .choice-button {
+        font-size: clamp(0.75rem, 3vw, 0.875rem); /* 12px–14px */
+        width: 90%;
+        padding: 8px 10px;
+        margin: 5px auto;
+        min-height: 30px;
+        border: 2px solid #55FF55;
+        background: rgba(85, 255, 85, 0.2);
+    }
+
+    #status-background, #crew-background {
+        height: 100%;
+        min-height: 150px;
+        position: relative;
+        width: 100%;
+    }
+
+    #status-title, #crew-title {
+        font-size: clamp(0.875rem, 3.5vw, 1rem); /* 14px–16px */
+        margin: 10px 0;
+    }
+
+    #status-list, #crew-list {
+        font-size: clamp(0.75rem, 3vw, 0.875rem); /* 12px–14px */
+        max-height: 50%;
+        padding: 5px;
+    }
+
+    .condition-icon, .mood-icon {
+        width: 14px;
+        height: 14px;
+        box-shadow: 0 0 2px #55FF55;
+    }
+
+    .divider {
+        display: block;
+        width: 90%;
+        height: 0;
+        border-bottom: 2px solid #FF0000;
+        margin: 5px auto;
+        clear: both;
+    }
+}
