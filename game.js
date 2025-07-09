@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const statusList = document.getElementById('status-list');
     const crewList = document.getElementById('crew-list');
     const cargoList = document.getElementById('cargo-list');
+    const resetButton = document.getElementById('resetButton');
 
     // Debug missing elements
     if (!eventText) console.error('Element #event-text not found');
@@ -12,6 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!statusList) console.error('Element #status-list not found');
     if (!crewList) console.error('Element #crew-list not found');
     if (!cargoList) console.error('Element #cargo-list not found');
+    if (!resetButton) console.error('Element #resetButton not found');
 
     // Default game state
     const defaultGameState = {
@@ -784,7 +786,64 @@ document.addEventListener('DOMContentLoaded', () => {
             ]
         },
         {
-            text: "A tragic incident claims a crew member’s life. [Cause]. Mourn or press on?",
+            text: "A trader offers Science equipment for 30 credits. Buy or decline?",
+            choices: [
+                {
+                    text: "Buy", action: () => {
+                        if (gameState.credits >= 30 && getTotalCargoUnits() + 50 <= 2400) {
+                            gameState.credits -= 30;
+                            gameState.food += 50; // Using food as a placeholder; replace with science cargo if tracked separately
+                            return "Bought 50 units of Science equipment.";
+                        } else if (gameState.credits < 30) {
+                            return "Not enough credits!";
+                        } else {
+                            return "Cargo capacity full!";
+                        }
+                    }
+                },
+                { text: "Decline", action: () => "You pass on the deal." }
+            ]
+        },
+        {
+            text: "A trader offers Social supplies for 25 credits. Buy or decline?",
+            choices: [
+                {
+                    text: "Buy", action: () => {
+                        if (gameState.credits >= 25 && getTotalCargoUnits() + 50 <= 2400) {
+                            gameState.credits -= 25;
+                            gameState.parts += 50; // Using parts as a placeholder; replace with social cargo if tracked separately
+                            return "Bought 50 units of Social supplies.";
+                        } else if (gameState.credits < 25) {
+                            return "Not enough credits!";
+                        } else {
+                            return "Cargo capacity full!";
+                        }
+                    }
+                },
+                { text: "Decline", action: () => "You pass on the deal." }
+            ]
+        },
+        {
+            text: "A shady trader offers Smuggling goods for 40 credits. Buy or decline?",
+            choices: [
+                {
+                    text: "Buy", action: () => {
+                        if (gameState.credits >= 40 && getTotalCargoUnits() + 50 <= 2400) {
+                            gameState.credits -= 40;
+                            gameState.fuel += 50; // Using fuel as a placeholder; replace with smuggling cargo if tracked separately
+                            return "Bought 50 units of Smuggling goods.";
+                        } else if (gameState.credits < 40) {
+                            return "Not enough credits!";
+                        } else {
+                            return "Cargo capacity full!";
+                        }
+                    }
+                },
+                { text: "Decline", action: () => "You pass on the deal." }
+            ]
+        },
+        {
+            text: "A tragic incident claims a crew memberÂ’s life. [Cause]. Mourn or press on?",
             choices: [
                 {
                     text: "Mourn", action: () => {
@@ -821,6 +880,10 @@ document.addEventListener('DOMContentLoaded', () => {
             ]
         }
     ];
+
+    function getTotalCargoUnits() {
+        return (gameState.fuel || 0) + (gameState.food || 0) + (gameState.parts || 0);
+    }
 
     function updateStatus() {
         if (!statusList) {
@@ -941,33 +1004,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         if (gameState.gameOver) {
             eventText.textContent = gameState.distance <= 0 ? "You reached Mars! You win!" : "Game Over: You ran out of resources.";
-            const restartButton = document.createElement('button');
-            restartButton.className = 'choice-button';
-            restartButton.textContent = 'Restart';
-            restartButton.onclick = () => {
-                gameState = {
-                    distance: 2250,
-                    fuel: 900,
-                    food: gameState.familySize * 137.5,
-                    credits: 100,
-                    parts: 450,
-                    gameOver: false,
-                    familySize: gameState.familySize,
-                    crew: gameState.crew.map(member => ({
-                        name: member.name,
-                        conditions: [],
-                        mood: 'content'
-                    }))
-                };
-                updateStatus();
-                updateCrew();
-                updateCargo();
-                triggerEvent();
-                saveGame();
-            };
             choicesDiv.innerHTML = '';
-            choicesDiv.appendChild(restartButton);
-            console.log('Game over, restart button added');
+            console.log('Game over');
             return;
         }
 
@@ -992,6 +1030,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
                 gameState.food -= foodDecrement;
 
+                if (gameState.credits < 0) gameState.credits = 0;
+
                 if (gameState.fuel <= 0 || gameState.food <= 0 || gameState.parts <= 0) {
                     gameState.gameOver = true;
                 } else if (gameState.distance <= 0) {
@@ -1014,6 +1054,32 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         console.log('Event triggered:', event.text);
     }
+
+    // Reset game
+    resetButton.addEventListener('click', () => {
+        if (confirm('Are you sure you want to reset the game?')) {
+            gameState = {
+                distance: 2250,
+                fuel: 900,
+                food: gameState.familySize * 137.5,
+                credits: 100,
+                parts: 450,
+                gameOver: false,
+                familySize: gameState.familySize,
+                crew: gameState.crew.map(member => ({
+                    name: member.name,
+                    conditions: [],
+                    mood: 'content'
+                }))
+            };
+            updateStatus();
+            updateCrew();
+            updateCargo();
+            triggerEvent();
+            saveGame();
+            console.log('Game reset');
+        }
+    });
 
     // Start game
     loadGame();
