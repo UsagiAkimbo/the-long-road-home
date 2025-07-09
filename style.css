@@ -142,7 +142,7 @@ body {
     display: block;
     width: 90%;
     height: 0;
-    border-bottom: 2px solid #FF0000;
+    border-bottom: 2px solid #55FF55;
     margin: 5px auto;
     clear: both;
 }
@@ -155,7 +155,7 @@ body {
     display: block;
     width: 90%;
     height: 0;
-    border-bottom: 2px solid #FF0000;
+    border-bottom: 2px solid #55FF55;
     margin: 5px auto;
     clear: both;
 }
@@ -570,6 +570,15 @@ body {
         position: relative;
     }
 
+    .divider {
+        display: block;
+        width: 90%;
+        height: 0;
+        border-bottom: 2px solid #000000;
+        margin: 5px auto;
+        clear: both;
+    }
+
     #status-area {
         grid-column: 1 / 2;
         grid-row: 2 / 3;
@@ -582,6 +591,15 @@ body {
         box-sizing: border-box;
         padding: 5px;
         position: relative;
+    }
+
+    .divider {
+        display: block;
+        width: 90%;
+        height: 0;
+        border-bottom: 2px solid #000000;
+        margin: 5px auto;
+        clear: both;
     }
 
     #status-background, #crew-background {
@@ -606,15 +624,6 @@ body {
         width: 14px;
         height: 14px;
         box-shadow: 0 0 2px #55FF55;
-    }
-
-    .divider, .divider {
-        display: block;
-        width: 90%;
-        height: 0;
-        border-bottom: 2px solid #000000;
-        margin: 5px auto;
-        clear: both;
     }
 
     #cargo-area {
