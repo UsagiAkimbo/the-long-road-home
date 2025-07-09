@@ -608,6 +608,15 @@ body {
         box-shadow: 0 0 2px #55FF55;
     }
 
+    .divider, ,divider {
+        display: block;
+        width: 90%;
+        height: 0;
+        border-bottom: 2px solid #000000;
+        margin: 5px auto;
+        clear: both;
+    }
+
     #cargo-area {
         grid-column: 1 / 2;
         grid-row: 3 / 4;
