@@ -608,7 +608,7 @@ body {
         box-shadow: 0 0 2px #55FF55;
     }
 
-    .divider, ,divider {
+    .divider, .divider {
         display: block;
         width: 90%;
         height: 0;
