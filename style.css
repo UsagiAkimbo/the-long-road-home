@@ -134,6 +134,15 @@ body {
     top: 0;
 }
 
+.divider, .divider {
+    display: block;
+    width: 90%;
+    height: 0;
+    border-bottom: 2px solid #FF0000;
+    margin: 5px auto;
+    clear: both;
+}
+
 #status-area {
     left: 0;
 }
@@ -190,20 +199,11 @@ body {
     box-shadow: 0 0 5px #55FF55;
 }
 
-.divider {
-    display: block;
-    width: 90%;
-    height: 0;
-    border-bottom: 2px solid #FF0000;
-    margin: 5px auto;
-    clear: both;
-}
-
 #cargo-area {
     width: 200px;
     height: 50%;
     position: absolute;
-    top: -50%;
+    top: 50%;
     left: 0;
 }
 
