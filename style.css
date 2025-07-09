@@ -134,7 +134,11 @@ body {
     top: 0;
 }
 
-.divider, .divider {
+#status-area {
+    left: 0;
+}
+
+.divider {
     display: block;
     width: 90%;
     height: 0;
@@ -143,12 +147,17 @@ body {
     clear: both;
 }
 
-#status-area {
-    left: 0;
-}
-
 #crew-area {
     right: 0;
+}
+
+.divider {
+    display: block;
+    width: 90%;
+    height: 0;
+    border-bottom: 2px solid #FF0000;
+    margin: 5px auto;
+    clear: both;
 }
 
 #status-background, #crew-background {
@@ -226,8 +235,8 @@ body {
 
 #cargo-list {
     display: grid;
-    grid-template-columns: repeat(8, 24px); /* 8 boxes per row */
-    grid-template-rows: repeat(6, 24px); /* 6 rows */
+    grid-template-columns: repeat(6, 24px); /* 8 boxes per row */
+    grid-template-rows: repeat(8, 24px); /* 6 rows */
     gap: 2px; /* Small gap between boxes */
     justify-content: start;
     align-content: start;
