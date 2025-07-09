@@ -924,12 +924,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         let totalSlots = 0;
         cargoTypes.forEach(cargo => {
-            const numIcons = Math.floor(cargo.units / 50); // 1 icon per 50 units
+            const numIcons = Math.min(Math.floor(cargo.units / 50), (48 - totalSlots)); // Cap at remaining slots
             for (let i = 0; i < numIcons && totalSlots < 48; i++) {
                 const icon = document.createElement('img');
                 icon.src = `assets/${cargo.icon}`;
                 icon.className = 'cargo-icon';
                 icon.alt = cargo.name;
+                icon.title = `${cargo.name.charAt(0).toUpperCase() + cargo.name.slice(1)}: ${cargo.units} units`; // Tooltip
                 cargoList.appendChild(icon);
                 totalSlots++;
             }
@@ -940,6 +941,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const placeholder = document.createElement('div');
             placeholder.className = 'cargo-icon';
             placeholder.style.background = 'rgba(255, 255, 255, 0.1)';
+            placeholder.title = 'Empty Slot'; // Tooltip
             cargoList.appendChild(placeholder);
             totalSlots++;
         }
